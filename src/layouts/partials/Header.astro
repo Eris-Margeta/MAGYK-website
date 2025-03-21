@@ -1,0 +1,156 @@
+---
+import menu from "@/config/menu.json";
+import config from "@/config/config.json";
+import Logo from "@/components/Logo.astro";
+import RightArrowBtn from "@/components/RightArrowBtn.astro";
+
+export interface ChildNavigationLink {
+  name: string;
+  url: string;
+}
+
+export interface NavigationLink {
+  name: string;
+  url: string;
+  hasChildren?: boolean;
+  children?: ChildNavigationLink[];
+}
+---
+
+<header class="header z-30">
+  <nav class="navbar container">
+    <!-- logo -->
+    <div class="order-0 flex items-center gap-10">
+      <Logo />
+      <!-- NAV MENU DESKTOP ONLY-->
+      <ul
+        id="nav-menu"
+        class="navbar-nav shadow-inset shadow-shadow/30 lg:shadow-none order-3 hidden lg:order-1 lg:flex items-center lg:w-auto lg:space-x-2 lg:pb-0"
+      >
+        {
+          menu.main.map((item) => (
+            <li class={`nav-item  ${item.hasChildren ? " group relative" : ""}`}>
+              {item.hasChildren ? (
+                <span class="nav-link inline-flex items-center cursor-pointer">
+                  {item.name}
+                  <svg
+                    class="h-4 w-4 fill-current group-hover:-rotate-180 ml-2 transition-transform duration-500"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </span>
+              ) : (
+                <a href={item.url} aria-label={item.name} class="nav-link inline-flex items-center cursor-pointer">
+                  {item.name}
+                </a>
+              )}
+              {item.hasChildren && (
+                <ul class="hidden border border-border p-8 mb-2 lg:mb-0 lg:transition-[opacity_transform] lg:duration-500 lg:absolute lg:invisible lg:group-hover:visible lg:opacity-0 lg:group-hover:opacity-100 lg:scale-95 lg:group-hover:scale-100 lg:flex lg:flex-col lg:gap-y-2 min-w-max nav-dropdown-list">
+                  {item.children.map((child: any) => (
+                    <li class="nav-dropdown-item">
+                      <a href={child.url} class="nav-dropdown-link">
+                        {child.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- navbar toggler -->
+    <input id="nav-toggle" type="checkbox" class="hidden" title="nav-toggle" />
+    <label for="nav-toggle" class="order-3 cursor-pointer flex items-center lg:hidden text-white/70 lg:order-1">
+      <div class="space-y-3 w-6 -translate-y-[20%]" id="show-button">
+        <title class="hidden">Menu Open</title>
+        <div class="w-[130%] md:w-full h-[2px] bg-text transition-transform" id="ham_top"></div>
+        <div class="w-[130%] md:w-full h-[2px] bg-text transition-transform" id="ham_bottom"></div>
+      </div>
+    </label>
+
+    <!-- /navbar toggler : MOBILE ONLY -->
+    <ul
+      id="nav-menu"
+      class="lg:hidden navbar-nav shadow-inset shadow-shadow/30 lg:shadow-none order-3 hidden lg:order-1 items-center lg:w-auto lg:space-x-2 lg:pb-0 inset-x-0 mx-auto"
+    >
+      {
+        menu.main.map((item) => (
+          <li
+            id={item.hasChildren ? "all-pages" : null}
+            class={`nav-item ${item.hasChildren ? "nav-dropdown group relative" : ""}`}
+          >
+            {item.hasChildren ? (
+              <span class="nav-link inline-flex items-center cursor-pointer">
+                {item.name}
+                <svg
+                  class="h-4 w-4 fill-current group-hover:-rotate-180 ml-2 transition-transform duration-500"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </span>
+            ) : (
+              <a href={item.url} aria-label={item.name} class=" nav-link inline-flex items-center cursor-pointer">
+                {item.name}
+              </a>
+            )}
+            {item.hasChildren && (
+              <ul
+                class="hidden border border-border p-8 mb-2 lg:mb-0 lg:transition-[opacity_transform] lg:duration-500 lg:absolute lg:invisible lg:group-hover:visible lg:opacity-0 lg:group-hover:opacity-100 lg:scale-95 lg:group-hover:scale-100 lg:flex lg:flex-col lg:gap-y-2 min-w-max nav-dropdown-list"
+                id={item.hasChildren ? "all-pages-dropdown" : null}
+              >
+                {item.children.map((child: any) => (
+                  <li class="nav-dropdown-item">
+                    <a href={child.url} class="nav-dropdown-link">
+                      {child.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+      {
+        config.navigation_button && config.navigation_button.enable && (
+          <li class="inline-block lg:hidden mt-4 lg:mt-0">
+            <a class="btn btn-primary" aria-label={config.navigation_button.label} href={config.navigation_button.link}>
+              {config.navigation_button.label}
+            </a>
+          </li>
+        )
+      }
+    </ul>
+
+    {
+      config.navigation_button && config.navigation_button.enable && (
+        <div class="order-1 ml-auto hidden lg:flex items-center md:order-2 lg:ml-0">
+          <RightArrowBtn
+            aria-label={config.navigation_button.label}
+            link={config.navigation_button.link}
+            label={config.navigation_button.label}
+            className="btn btn-outline-primary"
+          />
+        </div>
+      )
+    }
+  </nav>
+</header>
+<script>
+  const headerHamburgerInit = () => {
+    const allPages = document.getElementById("all-pages");
+    allPages &&
+      allPages.addEventListener("click", () => {
+        const menu = document.getElementById("all-pages-dropdown");
+        menu && menu.classList.toggle("active");
+      });
+  };
+
+  document.addEventListener("astro:page-load", () => {
+    headerHamburgerInit();
+  });
+</script>

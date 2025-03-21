@@ -1,0 +1,100 @@
+---
+import { getEntry } from "astro:content";
+import GradientTitle from "../components/GradientTitle.astro";
+import ImageMod from "../components/ImageMod.astro";
+import HiwTextItem from "@/components/HiwTextItem.astro";
+import type { CollectionEntry } from "astro:content";
+
+const { centerImage, head, list, subtitle, title } = (
+  (await getEntry(
+    "howItWorks",
+    "how-it-works"
+  )) as CollectionEntry<"howItWorks">
+).data;
+---
+
+<section class="section">
+  <div class="container overflow-hidden">
+    <div class="section-intro text-center lg:col-6 mx-auto">
+      <GradientTitle title={head} />
+      <h2 set:html={title} />
+      <p class="text-lg text-text/80" set:html={subtitle} />
+    </div>
+    <div class="section-content pt-10 relative">
+      <div class="flex lg:block gap-5 justify-center flex-wrap">
+        {
+          list &&
+            list.length &&
+            list
+              .slice(0, 5)
+              .map((text, index) => (
+                <HiwTextItem
+                  aosDelay={index * 100}
+                  title={text.title}
+                  index={++index}
+                />
+              ))
+        }
+      </div>
+
+      <div class="hiw_outer_circle -mb-[200px] hidden lg:block">
+        <div class="absolute inset-0 grid place-items-center">
+          <ImageMod
+            src={centerImage}
+            alt="center circle"
+            width={200}
+            height={300}
+            class="z-40"
+          />
+        </div>
+        <div class="hiw_center_circle isolate">
+          <div class="absolute inset-0 grid place-items-center rotate-45">
+            <div
+              class="flex items-center justify-center rotate-0 w-full h-full relative z-20"
+            >
+              <div
+                class="w-[25%] h-[25%] bg-secondary blur-[65px] translate-x-6 rounded-full"
+              >
+              </div>
+              <div class="w-[25%] h-[25%] bg-tertiary blur-[65px] rounded-full">
+              </div>
+            </div>
+          </div>
+          <canvas
+            class="ctaSporeCanvas absolute inset-0 z-20"
+            id="hiwSporeCanvas"
+            width="100"
+            height="100"
+            style="width: 100%; height: 100%;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { sporeCanvas } from "@/lib/utils/particleCanvas";
+
+  document.addEventListener("astro:page-load", () => {
+    const targetElementClassName = "#hiwSporeCanvas";
+    const particleCount = 80;
+    const particleMinSize = 0.2;
+    const particleMaxSize = 5;
+    const particleMinSpeed = 0.1;
+    const particleMaxSpeed = 0.4;
+    const particleWobbleSpeed = 0.2;
+    const particleWobble = 0.3;
+    const canvasSize = 1400;
+    sporeCanvas(
+      targetElementClassName,
+      particleCount,
+      particleMinSize,
+      particleMaxSize,
+      particleMinSpeed,
+      particleMaxSpeed,
+      particleWobbleSpeed,
+      particleWobble,
+      canvasSize
+    );
+  });
+</script>

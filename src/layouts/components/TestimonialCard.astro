@@ -1,0 +1,24 @@
+---
+import type { Testimonial } from "@/partials/Testimonial.astro";
+import ImageMod from "./ImageMod.astro";
+
+const testimonial = Astro.props.testimonial as Testimonial;
+const aosDelay = Astro.props.aosDelay as number;
+---
+
+<div class="p-7 rounded-2xl border border-border/80" data-aos="fade-up-sm" data-aos-delay={aosDelay}>
+  <div class="flex items-center mb-4">
+    <ImageMod
+      src={testimonial.avatar}
+      alt={testimonial.name}
+      width={60}
+      height={60}
+      class="rounded-full w-11 !aspect-square"
+    />
+    <div class="ml-3">
+      <p class="font-bold">{testimonial.name}</p>
+      <p class="text-text/50">{testimonial.designation}</p>
+    </div>
+  </div>
+  <p>"{testimonial.content}"</p>
+</div>

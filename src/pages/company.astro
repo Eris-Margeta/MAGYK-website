@@ -1,0 +1,25 @@
+---
+import Base from "@/layouts/Base.astro";
+import AboutCompany from "@/partials/AboutCompany.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import InvestorBrands from "@/partials/InvestorBrands.astro";
+import OurTeam from "@/partials/OurTeam.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+const { description, hero, meta_title, title } = (
+  (await getEntry(
+    "companyPageCollection",
+    "-index"
+  )) as CollectionEntry<"companyPageCollection">
+).data;
+---
+
+<Base title={title} meta_title={meta_title} description={description}>
+  <PageHeader title={hero.title} description={hero.description} />
+  <AboutCompany />
+  <InvestorBrands />
+  <OurTeam />
+  <CallToAction />
+</Base>

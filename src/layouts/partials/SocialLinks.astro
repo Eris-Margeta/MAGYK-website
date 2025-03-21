@@ -1,0 +1,30 @@
+---
+import type { ISocial } from "@/components/Social.astro";
+import socials from "@/config/social.json";
+import DynamicIcon from "@/helpers/DynamicIcon";
+---
+
+<section class="pb-32">
+  <div class="container text-center">
+    <p class="font-medium mb-6">Follow Us On</p>
+
+    <ul class="flex gap-4 justify-center">
+      {
+        socials.main.map((social: ISocial) => (
+          <li>
+            <a
+              aria-label={social.name}
+              href={social.link}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="w-10 aspect-square grid place-items-center border border-border hover:border-white transition-colors duration-500 rounded-full"
+            >
+              <span class="sr-only">{social.name}</span>
+              <DynamicIcon className="inline-block" icon={social.icon} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,61 @@
+{
+  "$ref": "#/definitions/testimonial",
+  "definitions": {
+    "testimonial": {
+      "type": "object",
+      "properties": {
+        "head": {
+          "type": "string"
+        },
+        "enable": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testimonials": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "designation": {
+                "type": "string"
+              },
+              "avatar": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "designation",
+              "avatar",
+              "content"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "head",
+        "enable",
+        "title",
+        "description",
+        "testimonials"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,62 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+const trustedBrands = (await getEntry(
+  "trustedBrands",
+  "trusted-brands"
+)) as CollectionEntry<"trustedBrands">;
+
+const { list: brandsList, title } = trustedBrands?.data;
+---
+
+<section class="section">
+  <div class="py-10 border-border/60 border-y">
+    <div class="container">
+      <div class="flex items-center gap-5">
+        <!-- TITLE -->
+        <p
+          class="text-h6 min-w-max hidden md:block"
+          set:html={markdownify(title)}
+        />
+        <!-- CAROUSEL ITEMS -->
+        <div class="is-brands-slider">
+          <div class="swiper-wrapper">
+            {
+              brandsList.map(({ brand, logo }) => (
+                <div class="swiper-slide">
+                  <img src={logo} alt={brand} class="object-contain" />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { Swiper } from "swiper";
+  import "swiper/css";
+  import "swiper/css/pagination";
+  import { Autoplay } from "swiper/modules";
+
+  function initSwiper() {
+    new Swiper(".is-brands-slider", {
+      modules: [Autoplay],
+      centeredSlides: true,
+      speed: 8000,
+      autoplay: {
+        delay: 0,
+        disableOnInteraction: false,
+      },
+      loop: true,
+      slidesPerView: "auto",
+      allowTouchMove: true,
+    });
+  }
+
+  document.addEventListener("astro:page-load", initSwiper);
+</script>

@@ -1,0 +1,67 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import dateFormat from "@/lib/utils/dateFormat";
+import CallToAction from "@/partials/CallToAction.astro";
+import { render } from "astro:content";
+
+export async function getStaticPaths() {
+  const COLLECTION_FOLDER = "events";
+  const allNews = await getSinglePage(COLLECTION_FOLDER);
+  const paths = allNews.map((news) => ({
+    params: {
+      single: news.id,
+    },
+    props: { news },
+  }));
+
+  return paths;
+}
+const { news } = Astro.props;
+const { Content } = await render(news);
+const { date, description, image, meta_title, title } = news.data;
+---
+
+<Base title={title} meta_title={meta_title} description={description}>
+  <section class="section">
+    <!-- PH SECTION -->
+    <div class="intro-image--header">
+      <div class="container lg:px-10">
+        <div class="space-y-5 text-center mx-auto">
+          <h1 class="text-h2 lg:text-hero" set:html={title} />
+          {
+            date && (
+              <p
+                class="text-text/80 mt-4 text-lg"
+                set:html={dateFormat(date, " MMM dd, yyyy")}
+              />
+            )
+          }
+        </div>
+      </div>
+    </div>
+    <!-- PH CONTENT -->
+    <div class="intro-image--content">
+      <div class="container lg:max-w-[908px] mx-auto">
+        {
+          image && (
+            <ImageMod
+              src={image}
+              alt={title}
+              width={850}
+              height={545}
+              class="w-full mb-14 object-cover"
+            />
+          )
+        }
+
+        <div class="content">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CallToAction />
+</Base>

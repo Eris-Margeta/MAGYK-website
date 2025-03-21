@@ -1,0 +1,22 @@
+---
+import PostCard from "@/components/PostCard.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+
+const COLLECTION_FOLDER = "events";
+const news = await getSinglePage(COLLECTION_FOLDER);
+const sortedPosts = sortByDate(news);
+const visiblePosts = sortedPosts.slice(0, 6);
+---
+
+<div>
+  <p class="text-h5 text-light mb-10 font-medium">Events</p>
+  <div class="grid md:grid-cols-2 gap-10">
+    {
+      visiblePosts &&
+        visiblePosts
+          .slice(0, 4)
+          .map((singleNews: any) => <PostCard collectionFolder={COLLECTION_FOLDER} singleNews={singleNews} />)
+    }
+  </div>
+</div>

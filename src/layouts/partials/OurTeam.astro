@@ -1,0 +1,65 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+interface TeamMember {
+  name: string;
+  designation: string;
+  avatar: string;
+}
+
+interface TeamSection {
+  title: string;
+  description: string;
+  memberList: TeamMember[];
+}
+
+const { title, description, memberList } = (
+  (await getEntry("ourTeam", "our-team")) as CollectionEntry<"ourTeam">
+).data;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="grid lg:grid-cols-2 gap-16">
+      <!-- LEFT -->
+      <div>
+        <h2
+          class="mb-4"
+          set:html={markdownify(title)}
+          data-aos="fade-up-sm"
+          data-aos-delay="100"
+        />
+        <p class="text-text/70" data-aos="fade-up-sm" data-aos-delay="200">
+          {description}
+        </p>
+      </div>
+      <!-- RIGHT -->
+      <div
+        class="flex flex-wrap justify-center gap-10 lg:gap-20"
+        data-aos="zoom-out-sm"
+        data-aos-delay="100"
+      >
+        {
+          memberList &&
+            memberList.length &&
+            memberList.map((member, index) => (
+              <div class="flex flex-col group">
+                <ImageMod
+                  width={150}
+                  height={150}
+                  src={member.avatar}
+                  alt={member.name}
+                  class="w-32 h-32 rounded-xl grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-300"
+                />
+                <h3 class="mt-4 text-lg">{member.name}</h3>
+                <p class="text-text/70 text-sm">{member.designation}</p>
+              </div>
+            ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,113 @@
+---
+import Logo from "@/components/Logo.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+import { markdownify } from "@/lib/utils/textConverter";
+
+// Function to replace {year} this from string to year
+function replaceYear(text: string) {
+  const year = new Date().getFullYear();
+
+  return text.replace("{year}", year.toString());
+}
+interface FooterLink {
+  name: string;
+  url: string;
+}
+
+interface Footer {
+  company: FooterLink[];
+  others: FooterLink[];
+}
+
+const { footer }: { footer: Footer } = menu;
+---
+
+<footer class="container xl:px-10">
+  <div class="pb-20 xl:pb-32">
+    <div class="flex flex-col gap-20 md:flex-row justify-between">
+      <!-- LEFT SIDE -->
+      <div class="flex gap-20 lg:gap-40">
+        {
+          footer.company && footer.company.length > 0 && (
+            <div data-aos="fade-right-sm" data-aos-delay="100">
+              <h3 class="text-sm text-light mb-10 uppercase">Company</h3>
+              <ul>
+                {footer.company.map((item) => (
+                  <li class="mb-2">
+                    <a
+                      href={item.url}
+                      class="text-text hover:text-text/70 transition-colors duration-300"
+                    >
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        {
+          footer.others && footer.others.length > 0 && (
+            <div data-aos="fade-right-sm" data-aos-delay="200">
+              <h3 class="text-sm text-light mb-10 uppercase">Others</h3>
+              <ul>
+                {footer.others.map((item) => (
+                  <li class="mb-2">
+                    <a
+                      href={item.url}
+                      class="text-text hover:text-text/70 transition-colors duration-300"
+                    >
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+      <!-- RIGHT SIDE -->
+      <div class="max-w-[325px] lg:w-[325px]">
+        <div data-aos="fade-right-sm" data-aos-delay="300">
+          <h3 class="text-sm text-light mb-10 uppercase">STAY UP TO DATE</h3>
+          {
+            config.newsletter && (
+              <form
+                action={config.newsletter.input_action}
+                method="post"
+                class="flex flex-col gap-4"
+              >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your email"
+                  class="w-full py-3 px-4 bg-theme-light placeholder:text-white text-light border border-border focus:outline-none transition-colors duration-300 rounded-lg"
+                  required
+                />
+                <button type="submit" class="btn btn-primary rounded-lg !py-2">
+                  Subscribe
+                </button>
+              </form>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-border/60 pt-10 pb-20">
+    <div
+      class="flex flex-col md:flex-row gap-y-10 justify-between md:items-center"
+    >
+      <div data-aos="fade-right-sm" data-aos-delay="100">
+        <Logo />
+      </div>
+      <p
+        class="text-sm text-text/70"
+        set:html={markdownify(replaceYear(config.params.copyright))}
+        data-aos="fade-right-sm"
+        data-aos-delay="300"
+      />
+    </div>
+  </div>
+</footer>

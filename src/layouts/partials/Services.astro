@@ -1,0 +1,114 @@
+---
+import GradientTitle from "@/components/GradientTitle.astro";
+import ImageMod from "@/components/ImageMod.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+const services = (await getEntry(
+  "services",
+  "services"
+)) as CollectionEntry<"services">;
+
+const { serviceList } = services?.data;
+---
+
+<section class="section xl:pb-20 overflow-hidden">
+  <div class="container">
+    {
+      serviceList &&
+        serviceList.map((service, index) => (
+          <div class="mb-10 last:mb-0">
+            <div
+              class:list={[
+                "flex flex-col-reverse lg:flex-row lg:items-center gap-10  w-full",
+                { "lg:flex-row-reverse": index % 2 !== 0 },
+              ]}
+            >
+              {/* LEFT */}
+              <div class="lg:w-[52%] overflow-hidden">
+                <div class="grid place-items-center relative isolate  py-32">
+                  <div class="absolute inset-0 grid place-items-center ">
+                    <canvas class="absolute inset-0 w-full h-full overflow-hidden -z-10 serviceSporeCanvas" />
+                    <div class="flex items-center justify-center rotate-[55deg] w-full h-full -z-20 bg-gradient-image">
+                      <div class="w-1/3 aspect-square bg-secondary blur-[90px] rounded-full translate-x-10" />
+                      <div class="w-1/3 aspect-square bg-tertiary blur-[90px] rounded-full -translate-x-10" />
+                    </div>
+                  </div>
+                  <ImageMod
+                    src={service.image.src}
+                    alt={service.image.alt}
+                    width={service.image.width}
+                    height={service.image.height}
+                    class="w-[220px] md:w-auto"
+                  />
+                </div>
+              </div>
+              {/* RIGHT */}
+              <div class="lg:w-[48%]">
+                <div class="space-y-20">
+                  <div class="space-y-6">
+                    <GradientTitle
+                      title={service.head}
+                      data-aos="fade-up-sm"
+                      data-aos-delay="100"
+                    />
+                    {service.title && (
+                      <h2
+                        set:html={markdownify(service.title)}
+                        data-aos="fade-up-sm"
+                        data-aos-delay="150"
+                      />
+                    )}
+                    {service.description && (
+                      <p
+                        class="text-lg text-text/80"
+                        data-aos="fade-up-sm"
+                        data-aos-delay="200"
+                        set:html={markdownify(service.description)}
+                      />
+                    )}
+                  </div>
+                  {service.list && service.list.length && (
+                    <div
+                      class="grid grid-cols-2 gap-5"
+                      data-aos="fade-up-sm"
+                      data-aos-delay="250"
+                    >
+                      {service.list.map((item) => (
+                        <div>
+                          <p class="text-lg font-semibold mb-4">{item.title}</p>
+                          <p class="text-text/80">{item.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+    }
+  </div>
+</section>
+
+<script>
+  import { sporeCanvas } from "@/lib/utils/particleCanvas";
+
+  document.addEventListener("astro:page-load", () => {
+    const targetElementClassName = ".serviceSporeCanvas";
+    const particleCount = 100;
+    const particleMinSize = 2;
+    const particleMaxSize = 6;
+    const particleMinSpeed = 0.1;
+    const particleMaxSpeed = 1;
+    sporeCanvas(
+      targetElementClassName,
+      particleCount,
+      particleMinSize,
+      particleMaxSize,
+      particleMinSpeed,
+      particleMaxSpeed
+    );
+  });
+</script>

@@ -1,0 +1,51 @@
+---
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import ResourcesEvents from "@/partials/ResourcesEvents.astro";
+import ResourcesNews from "@/partials/ResourcesNews.astro";
+import { getEntry, type CollectionEntry } from "astro:content";
+
+const COLLECTION_FOLDER = "resources";
+const postIndex = (await getEntry(
+  COLLECTION_FOLDER,
+  "-index"
+)) as CollectionEntry<"resources">;
+const headingContent = postIndex.data.hero;
+---
+
+<Base {...postIndex.data}>
+  <section class="section">
+    <!-- PH SECTION -->
+    <div class="intro-image--header">
+      <div class="container lg:px-10">
+        <div class="space-y-5 text-center lg:col-6 mx-auto">
+          <h1
+            class="text-h2 lg:text-hero"
+            set:html={headingContent.title}
+            data-aos="fade-up-sm"
+            data-aos-delay="100"
+          />
+          <p
+            class="text-text/80 mt-4 text-lg"
+            set:html={headingContent.description}
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- PH CONTENT -->
+    <div class="intro-image--content">
+      <div
+        class="container lg:px-10 space-y-20 lg:space-y-32"
+        data-aos="fade-up-sm"
+        data-aos-delay="100"
+      >
+        <ResourcesNews />
+        <ResourcesEvents />
+      </div>
+    </div>
+  </section>
+
+  <CallToAction />
+</Base>

@@ -1,0 +1,105 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import { getEntry } from "astro:content";
+import GradientTitle from "./GradientTitle.astro";
+import type { CollectionEntry } from "astro:content";
+
+const whyUs = (await getEntry("whyUs", "why-us")) as CollectionEntry<"whyUs">;
+const { head, title, description, marqueeTextList } = whyUs?.data;
+---
+
+<section class="section">
+  <div class="container">
+    <div
+      class="flex flex-col-reverse lg:flex-row lg:items-center gap-10 w-full"
+    >
+      {/* LEFT */}
+      <div class="lg:w-[52%]">
+        <!-- gradient container -->
+        <div>
+          <div class="space-y-5">
+            {
+              marqueeTextList &&
+                marqueeTextList.length &&
+                marqueeTextList.map((marqueeText, index) => (
+                  <div class="is-texts-slider">
+                    <div class="swiper-wrapper reverse">
+                      {marqueeText.textList &&
+                        marqueeText.textList.length &&
+                        marqueeText.textList.map((text, index) => (
+                          <p
+                            class="text-h3-sm text-light font-light swiper-slide"
+                            set:html={markdownify(text)}
+                          />
+                        ))}
+                    </div>
+                  </div>
+                ))
+            }
+          </div>
+        </div>
+      </div>
+      {/* RIGHT */}
+      <div class="lg:w-[48%]">
+        <div class="space-y-6">
+          <GradientTitle
+            title={head}
+            data-aos="fade-up-sm"
+            data-aos-delay="100"
+          />
+          {
+            title && (
+              <h2
+                set:html={markdownify(title)}
+                data-aos="fade-up-sm"
+                data-aos-delay="150"
+              />
+            )
+          }
+          {
+            description && (
+              <p
+                class="text-lg text-text/80"
+                set:html={markdownify(description)}
+                data-aos="fade-up-sm"
+                data-aos-delay="200"
+              />
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { Swiper } from "swiper";
+  import "swiper/css";
+  import "swiper/css/pagination";
+  import { Autoplay } from "swiper/modules";
+
+  function initSwiper() {
+    const sliders = document.querySelectorAll(".is-texts-slider");
+
+    sliders.forEach((slider, index) => {
+      const isOdd = index % 2 !== 0;
+
+      new Swiper(slider as HTMLElement, {
+        modules: [Autoplay],
+        centeredSlides: true,
+        speed: 20000,
+        direction: "horizontal", // Or "vertical" depending on your preference
+        autoplay: {
+          delay: 0,
+          disableOnInteraction: false,
+          reverseDirection: isOdd ? false : true,
+        },
+        loop: true,
+        slidesPerView: "auto",
+        allowTouchMove: true,
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initSwiper);
+</script>

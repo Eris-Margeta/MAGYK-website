@@ -1,0 +1,43 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+const aboutCompany = (await getEntry(
+  "aboutCompany",
+  "about-company"
+)) as CollectionEntry<"aboutCompany">;
+
+const { title, descriptionList } = aboutCompany?.data;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div class="xl:mr-32">
+        <h2
+          set:html={markdownify(title)}
+          data-aos="fade-up-sm"
+          data-aos-delay="100"
+        />
+      </div>
+      <div>
+        <ul
+          class="space-y-12 lg:space-y-14"
+          data-aos="fade-up-sm"
+          data-aos-delay="200"
+        >
+          {
+            descriptionList &&
+              descriptionList.length &&
+              descriptionList.map((item, index) => (
+                <li class="text-text/80text-lg">
+                  <p set:html={markdownify(item.title)} />
+                </li>
+              ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

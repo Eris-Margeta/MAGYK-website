@@ -1,0 +1,30 @@
+---
+import config from "@/config/config.json";
+import dateFormat from "@/lib/utils/dateFormat";
+import { plainify } from "@/lib/utils/textConverter";
+
+const collectionFolder = Astro.props.collectionFolder;
+const { id, data } = Astro.props.singleNews;
+const { title, date } = data;
+---
+
+<article class="rotating-border">
+  <div
+    class="border border-border hover:border-text/30 transition-colors duration-500 bg-body rounded-2xl p-8 z-10"
+  >
+    <p class="font-medium text-light mb-6 uppercase">
+      {dateFormat(date, " MMM dd, yyyy")}
+    </p>
+    <a
+      href={"/" + collectionFolder + "/" + id}
+      class="hover:text-text/70 transition-colors duration-500"
+    >
+      <p
+        class="text-h5"
+        set:html={plainify(
+          title.slice(0, Number(config.settings.summary_length))
+        )}
+      />
+    </a>
+  </div>
+</article>

@@ -1,0 +1,66 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { render } from "astro:content";
+import dayjs from "dayjs";
+
+// get static paths for all pages
+export async function getStaticPaths() {
+  const COLLECTION_FOLDER = "pages";
+
+  const pages = await getSinglePage(COLLECTION_FOLDER);
+
+  const paths = pages.map((page) => ({
+    params: {
+      regular: page.id,
+    },
+    props: { page },
+  }));
+  return paths;
+}
+
+const { page } = Astro.props;
+const { title, meta_title, description, image } = page.data;
+const { Content, remarkPluginFrontmatter } = await render(page);
+const lastModified = dayjs(remarkPluginFrontmatter.lastModified).format(
+  "MMMM DD, YYYY"
+);
+---
+
+<Base
+  title={title}
+  meta_title={meta_title}
+  description={description}
+  image={image}
+>
+  <section class="section">
+    <!-- PH SECTION -->
+    <div class="intro-image--header">
+      <div class="container lg:px-10">
+        <div class="space-y-5 text-center lg:col-8 mx-auto">
+          <h1
+            class="text-h2 lg:text-hero"
+            set:html={title}
+            data-aos="fade-up-sm"
+            data-aos-delay="100"
+          />
+          <p
+            class="text-text/80 mt-4 text-lg"
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+          >
+            Last Modified: {lastModified}
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- PH CONTENT -->
+    <div class="intro-image--content">
+      <div class="container lg:col-6 mx-auto">
+        <div class="content" data-aos="fade-up-sm" data-aos-delay="200">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

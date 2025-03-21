@@ -1,0 +1,226 @@
+// ANIMATIONS
+.rotate-infinite {
+  animation: rotate 60s linear infinite;
+}
+
+.blink-tube-effect {
+  animation: blink-tube 2s forwards;
+}
+
+@keyframes blink-tube {
+  0% {
+    opacity: 0.1;
+  }
+
+  20%,
+  80% {
+    opacity: 0.95;
+  }
+
+  30%,
+  70% {
+    opacity: 0.9;
+  }
+
+  40%,
+  60% {
+    opacity: 0.8;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating-border {
+  @apply relative p-[2px] overflow-hidden rounded-2xl;
+
+  &:hover::before {
+    content: "";
+    @apply absolute inset-0 w-[150%] top-1/2 h-10 bg-gradient-to-t from-transparent to-primary -z-10;
+    transform: translateX(-65%) translateY(-50%) rotate(0deg);
+    animation: rotating-border 10s linear infinite;
+    transform-origin: right;
+  }
+}
+
+@keyframes rotating-border {
+  0% {
+    transform: translateX(-65%) translateY(-50%) rotate(0deg);
+  }
+  10% {
+    transform: translateX(-65%) translateY(-50%) rotate(60deg);
+  }
+  100% {
+    transform: translateX(-65%) translateY(-50%) rotate(360deg);
+  }
+}
+
+.hover-background-effect {
+  @apply relative overflow-hidden isolate;
+
+  &::before,
+  &::after {
+    @apply content-[''] absolute w-2/6 h-5/6 bg-transparent blur-[50px] rounded-full transition-all duration-500;
+    top: 50%;
+    left: 50%;
+  }
+
+  &::before {
+    @apply group-hover:bg-secondary/60;
+    transform: translate(-100%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    @apply group-hover:bg-tertiary/60;
+    transform: translate(-75%, -50%) rotate(45deg);
+  }
+
+  &:hover::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &:hover::after {
+    transform: translate(-25%, -50%) rotate(45deg);
+  }
+}
+
+// Swiper Animation
+.is-brands-slider {
+  @apply relative overflow-hidden;
+
+  &::before {
+    content: "";
+    @apply absolute inset-0 z-10;
+    background: linear-gradient(
+      45deg,
+      theme("colors.body") 0%,
+      transparent 30%,
+      transparent 70%,
+      theme("colors.body") 100%
+    );
+  }
+}
+
+.is-brands-slider .swiper-wrapper {
+  -webkit-transition-timing-function: linear !important;
+  transition-timing-function: linear !important;
+}
+.is-brands-slider .swiper-slide {
+  width: auto;
+  @apply mx-8 lg:mx-10;
+}
+
+.is-texts-slider {
+  @apply relative overflow-hidden;
+
+  &::before {
+    content: "";
+    @apply absolute inset-0 z-10;
+    background: linear-gradient(
+      45deg,
+      theme("colors.body") 0%,
+      transparent 30%,
+      transparent 70%,
+      theme("colors.body") 100%
+    );
+  }
+}
+
+.is-texts-slider .swiper-wrapper {
+  -webkit-transition-timing-function: linear !important;
+  transition-timing-function: linear !important;
+}
+
+.is-texts-slider .swiper-slide {
+  width: auto;
+  @apply mx-8 lg:mx-10;
+}
+
+// AOS Animations
+/* AOS Custom Animations */
+[data-aos="fade-up-sm"] {
+  transform: translateY(15px);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+[data-aos="fade-down-sm"] {
+  transform: translateY(-15px);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+[data-aos="fade-left-sm"] {
+  transform: translateX(15px);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+[data-aos="fade-right-sm"] {
+  transform: translateX(-15px);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+[data-aos="zoom-out-sm"] {
+  transform: scale(1.02);
+  opacity: 0.5;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+[data-aos="fade-down-left-sm"] {
+  transform: translate3d(40px, -40px, 0);
+  opacity: 0.5;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: translate3d(0px, 0px, 0);
+    opacity: 1;
+  }
+}
+[data-aos="fade-up-left-sm"] {
+  transform: translate3d(40px, 40px, 0);
+  opacity: 0.5;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: translate3d(0px, 0px, 0);
+    opacity: 1;
+  }
+}
+
+[data-aos="fade-up-right-sm"] {
+  transform: translate3d(-40px, 40px, 0);
+  opacity: 0.5;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: translate3d(0px, 0px, 0);
+    opacity: 1;
+  }
+}

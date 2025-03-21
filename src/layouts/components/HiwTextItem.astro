@@ -1,0 +1,12 @@
+---
+const { title, index, aosDelay } = Astro.props;
+---
+
+<div class="hiw_circle_text text-center border px-10 lg:px-0 py-4 lg:py-0 border-border rounded-2xl lg:border-none">
+  <div class="flex flex-col items-center gap-y-3" data-aos="fade-up-sm" data-aos-delay={aosDelay}>
+    <span>{title}</span>
+    <span class="w-10 aspect-square grid place-items-center bg-theme-light border border-border rounded-full"
+      >{index}</span
+    >
+  </div>
+</div>

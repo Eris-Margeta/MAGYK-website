@@ -1,0 +1,32 @@
+---
+import PostCard from "@/components/PostCard.astro";
+const { pageHeader, posts, collectionFolder } = Astro.props;
+---
+
+<section class="section">
+  <!-- PH SECTION -->
+  <div class="intro-image--header">
+    <div class="container lg:px-10">
+      <div class="space-y-5 text-center lg:col-6 mx-auto">
+        <h1 class="text-h2 lg:text-hero" set:html={pageHeader.title} data-aos="fade-up-sm" data-aos-delay="100" />
+        <p
+          class="text-text/80 mt-4 text-lg"
+          set:html={pageHeader.description}
+          data-aos="fade-up-sm"
+          data-aos-delay="200"
+        />
+      </div>
+    </div>
+  </div>
+  <!-- PH CONTENT -->
+  <div class="intro-image--content">
+    <div class="container lg:px-10">
+      <div class="grid md:grid-cols-2 gap-10" data-aos="fade-up-sm" data-aos-delay="200">
+        {
+          posts &&
+            posts.map((singleNews: any) => <PostCard collectionFolder={collectionFolder} singleNews={singleNews} />)
+        }
+      </div>
+    </div>
+  </div>
+</section>

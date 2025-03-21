@@ -1,0 +1,36 @@
+---
+import Pagination from "@/components/Pagination.astro";
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import CallToAction from "@/partials/CallToAction.astro";
+import PostsWithPageHeader from "@/partials/PostsWithPageHeader.astro";
+import { getEntry, type CollectionEntry } from "astro:content";
+
+const COLLECTION_FOLDER = "news";
+const postIndex = (await getEntry(
+  COLLECTION_FOLDER,
+  "-index"
+)) as CollectionEntry<"news">;
+const posts = await getSinglePage(COLLECTION_FOLDER);
+const sortedPosts = sortByDate(posts);
+const visiblePosts = sortedPosts.slice(0, config.settings.pagination);
+const headingContent = postIndex.data.hero;
+const totalPages: number = Math.ceil(posts.length / config.settings.pagination);
+---
+
+<Base
+  title={postIndex.data.title}
+  meta_title={postIndex.data.meta_title}
+  image={postIndex.data.image}
+  description={postIndex.data.description}
+>
+  <PostsWithPageHeader
+    collectionFolder={COLLECTION_FOLDER}
+    pageHeader={headingContent}
+    posts={visiblePosts}
+  />
+  <Pagination section={COLLECTION_FOLDER} totalPages={totalPages} />
+  <CallToAction />
+</Base>

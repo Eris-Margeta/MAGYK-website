@@ -1,0 +1,89 @@
+---
+import config from "@/config/config.json";
+
+const { pageHeader } = Astro.props;
+const { contact_form_action }: { contact_form_action: string } = config.params;
+---
+
+<section class="section py-16 lg:pt-20 lg:pb-32 bg-hero-image">
+  <div class="container">
+    <div class="section-intro text-center lg:col-6 mx-auto">
+      <h2 class="text-h2 lg:text-hero" set:html={pageHeader.title} data-aos="fade-up-sm" data-aos-delay="100" />
+      <p class="text-text/80 mt-4 text-lg" set:html={pageHeader.subtitle} data-aos="fade-up-sm" data-aos-delay="200" />
+    </div>
+    <div class="section-container">
+      <div class="max-w-[760px] mx-auto border border-border shadow-inset shadow-shadow/60 p-10 rounded-2xl bg-body">
+        <form action={contact_form_action} method="post" data-aos="fade-up-sm" data-aos-delay="200">
+          <div class="grid grid-cols-2 gap-6">
+            <div class="col-span-2 sm:col-span-1">
+              <label for="firstName" class="form-label">First Name *</label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                required
+                aria-required="true"
+                class="form-input"
+                placeholder="Your First Name"
+              />
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label for="lastName" class="form-label">Last Name *</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                class="form-input"
+                required
+                aria-required="true"
+                placeholder="Your Last Name"
+              />
+            </div>
+            <div class="col-span-2">
+              <label for="email" class="form-label">Email *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                required
+                aria-required="true"
+                placeholder="johndoe@example.com"
+              />
+            </div>
+
+            <div class="col-span-2">
+              <label for="subject" class="form-label">Subject *</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                class="form-input"
+                required
+                aria-required="true"
+                placeholder="Write Your Subject Here"
+              />
+            </div>
+
+            <div class="col-span-2">
+              <label for="message" class="form-label">Write Message *</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="3"
+                class="form-input h-auto"
+                required
+                aria-required="true"
+                placeholder="Write Your Message Here"></textarea>
+            </div>
+          </div>
+          <div class="mt-6 text-center">
+            <button type="submit" class="btn btn-primary py-4 px-7 text-theme-light leading-none">
+              Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

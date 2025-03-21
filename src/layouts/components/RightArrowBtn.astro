@@ -1,0 +1,43 @@
+---
+const { label, link, className, ...rest } = Astro.props;
+---
+
+<a href={link} {...rest} class={"group/arrowBtn flex items-center max-w-max gap-x-4 " + className} aria-label={label}>
+  <span>{label}</span>
+  <div class="relative w-4 h-4 grid place-items-center overflow-hidden">
+    <i
+      class="group-hover/arrowBtn:translate-x-full transition-transform duration-500 ease-out w-4 h-4 grid place-items-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        style="width: 100%; height: 100%;"
+        ><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg
+      >
+    </i>
+    <i
+      class="absolute top-0 right-full group-hover/arrowBtn:translate-x-full transition-transform duration-500 ease-out w-4 h-4 grid place-items-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        style="width: 100%; height: 100%;"
+        ><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg
+      >
+    </i>
+  </div>
+</a>

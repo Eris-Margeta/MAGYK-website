@@ -1,0 +1,89 @@
+{
+  "main": [
+    {
+      "name": "Company",
+      "url": "/company"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact"
+    },
+    {
+      "name": "All Pages",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Home",
+          "url": "/"
+        },
+        {
+          "name": "Resources",
+          "url": "/resources"
+        },
+        {
+          "name": "Events",
+          "url": "/events"
+        },
+        {
+          "name": "News",
+          "url": "/news"
+        },
+        {
+          "name": "Privacy",
+          "url": "/privacy-policy"
+        },
+        {
+          "name": "Terms & Condition",
+          "url": "/terms-conditions"
+        },
+        {
+          "name": "Elements",
+          "url": "/elements"
+        },
+        {
+          "name": "404",
+          "url": "/not-found"
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "company": [
+      {
+        "name": "About Us",
+        "url": "/about"
+      },
+      {
+        "name": "Contact",
+        "url": "/contact"
+      },
+      {
+        "name": "News",
+        "url": "/news"
+      },
+      {
+        "name": "Resources",
+        "url": "/resources"
+      }
+    ],
+    "others": [
+      {
+        "name": "Privacy Policy",
+        "url": "/privacy"
+      },
+      {
+        "name": "Terms & Conditions",
+        "url": "/terms-conditions"
+      },
+      {
+        "name": "Legal Terms",
+        "url": "/terms"
+      },
+      {
+        "name": "404",
+        "url": "/not-found"
+      }
+    ]
+  }
+}

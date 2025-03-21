@@ -1,0 +1,43 @@
+{
+  "site": {
+    "title": "MAGYK",
+    "base_url": "https://magyk.vercel.app",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/logo.png",
+    "logo_width": "159",
+    "logo_height": "49",
+    "logo_text": "MAGYK"
+  },
+
+  "settings": {
+    "pagination": 8,
+    "summary_length": 70,
+    "news_folder": "news",
+    "events_folder": "events"
+  },
+
+  "params": {
+    "contact_form_action": "#",
+    "copyright": "©{year} All Rights Reserved by [MAGYK](https://magyk.xyz)."
+  },
+
+  "newsletter": {
+    "footer_title": "STAY UP TO DATE",
+    "input_placeholder": "Your Email",
+    "input_action": "#"
+  },
+
+  "navigation_button": {
+    "enable": true,
+    "label": "Get Started",
+    "link": ""
+  },
+
+  "metadata": {
+    "meta_author": "Eris",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "MAGYK REALM"
+  }
+}

@@ -1,0 +1,30 @@
+---
+import GradientTitle from "@/components/GradientTitle.astro";
+import Accordion from "@/shortcodes/Accordion";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+const { head, title, list } = (
+  (await getEntry("faq", "faq")) as CollectionEntry<"faq">
+).data;
+---
+
+<section class="section">
+  <div class="container lg:px-24">
+    <div class="section-intro text-center">
+      <GradientTitle title={head} data-aos="fade-up-sm" data-aos-delay="100" />
+      <h2 data-aos="fade-up-sm" data-aos-delay="150">{title}</h2>
+    </div>
+    <div class="section-content" data-aos="fade-up-sm" data-aos-delay="200">
+      {
+        list &&
+          list.length &&
+          list.map((faq) => (
+            <Accordion client:load title={faq.question}>
+              {faq.answer}
+            </Accordion>
+          ))
+      }
+    </div>
+  </div>
+</section>
