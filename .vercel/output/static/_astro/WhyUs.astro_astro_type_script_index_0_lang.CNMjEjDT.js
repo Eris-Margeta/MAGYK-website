@@ -1,1 +1,0 @@
-import{S as r,A as s}from"./autoplay.BLtPG0fp.js";function i(){document.querySelectorAll(".is-texts-slider").forEach((e,t)=>{const o=t%2!==0;new r(e,{modules:[s],centeredSlides:!0,speed:2e4,direction:"horizontal",autoplay:{delay:0,disableOnInteraction:!1,reverseDirection:!o},loop:!0,slidesPerView:"auto",allowTouchMove:!0})})}document.addEventListener("astro:page-load",i);

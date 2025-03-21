@@ -1,1 +1,0 @@
-import{S as e,A as a}from"./autoplay.BLtPG0fp.js";function o(){new e(".is-brands-slider",{modules:[a],centeredSlides:!0,speed:8e3,autoplay:{delay:0,disableOnInteraction:!1},loop:!0,slidesPerView:"auto",allowTouchMove:!0})}document.addEventListener("astro:page-load",o);
