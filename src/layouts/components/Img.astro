@@ -1,0 +1,26 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+  class?: string;
+  sizes?: string;
+  widths?: number[];
+}
+
+const { src, ...rest } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>("/public/images/**/*.{jpeg,jpg,png}");
+const key = `/public${src}`;
+if (!images[key]) {
+  throw new Error(`Image not found: ${src}. Images must live in /public/images.`);
+}
+---
+
+<Image src={images[key]()} format="webp" {...rest} />

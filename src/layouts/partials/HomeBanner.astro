@@ -1,130 +1,138 @@
 ---
-import GradientTitle from "@/components/GradientTitle.astro";
-import ImageMod from "@/components/ImageMod.astro";
-import RightArrowBtn from "@/components/RightArrowBtn.astro";
-import { markdownify } from "@/lib/utils/textConverter";
-import type { CollectionEntry } from "astro:content";
+import ContractAddress from "@/components/ContractAddress.astro";
+import Icon from "@/components/Icon.astro";
+import Img from "@/components/Img.astro";
+import config from "@/config/config.json";
 import { getEntry } from "astro:content";
-import { Image } from "astro:assets"; // Import Astro's Image component
 
-const homeBanner = (await getEntry(
-  "homeBanner",
-  "home-banner",
-)) as CollectionEntry<"homeBanner">;
-
-const { head, button, image, quote, title } = homeBanner?.data;
-const ogImage = "/images/hero.png";
+const banner = await getEntry("homeBanner", "home-banner");
+const { eyebrow, title, highlight, description, ringText } = banner!.data;
+const ring = ringText.repeat(2);
 ---
 
-<section class="mb-20">
-  <div class="md:pt-2 md:pb-22 overflow-hidden">
-    <div class="bg-hero-image py-10 relative">
-      <!-- New div for background image with overlay and vignette -->
-      <div
-        class="absolute inset-0 before:content-[''] before:absolute before:inset-0 before:bg-black/50 after:content-[''] after:absolute after:inset-0 after:bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"
+<section class="relative isolate flex min-h-[100svh] items-center overflow-hidden pb-24 pt-32 lg:pb-32">
+  <Img
+    src="/images/hero.png"
+    alt=""
+    width={1600}
+    height={1200}
+    widths={[768, 1280, 1600]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 -z-30 h-full w-full object-cover opacity-45"
+  />
+  <div class="absolute inset-0 -z-20 bg-gradient-to-r from-body via-body/85 to-body/20"></div>
+  <div class="absolute inset-0 -z-20 bg-gradient-to-t from-body via-transparent to-body/60"></div>
+  <div class="bg-grid absolute inset-0 -z-20 opacity-60"></div>
+  <canvas class="ember-canvas pointer-events-none absolute inset-0 -z-10 h-full w-full" aria-hidden="true"></canvas>
+
+  <div class="container grid items-center gap-16 lg:grid-cols-12">
+    <div class="text-center lg:col-span-7 lg:text-left">
+      <span class="eyebrow" data-reveal>
+        <span class="pulse-dot h-2 w-2 rounded-full bg-emerald-400 text-emerald-400"></span>
+        {eyebrow}
+      </span>
+      <h1
+        class="mt-7 text-[clamp(2.6rem,6.2vw,5.4rem)] font-semibold leading-[1.02]"
+        data-reveal
+        data-reveal-delay="80"
       >
-        <Image
-          src={ogImage}
-          alt="Background image for Magyk home hero"
-          width={1280}
-          height={720}
-          class="w-full h-full object-cover"
-        />
+        {title} <span class="text-gold text-gold-animated">{highlight}</span>
+      </h1>
+      <p class="mx-auto mt-7 max-w-xl text-lg text-light md:text-xl lg:mx-0" data-reveal data-reveal-delay="160">
+        {description}
+      </p>
+      <div
+        class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
+        data-reveal
+        data-reveal-delay="240"
+      >
+        <a href={config.token.sale_url} target="_blank" rel="noopener noreferrer" class="btn btn-primary px-8 py-4 text-base">
+          Buy {config.token.symbol}
+          <Icon name="arrow" size={18} />
+        </a>
+        <a href="/whitepaper" class="btn btn-outline px-8 py-4 text-base">
+          <Icon name="book" size={18} />
+          Read the whitepaper
+        </a>
       </div>
-      <div class="container">
-        <div class="grid md:grid-cols-12 items-center">
-          <div class="md:col-span-6 text-center md:text-left">
-            <div class="mb-7" data-aos="fade-up-sm">
-              <GradientTitle title={head} />
-            </div>
-            <h1
-              class="xl:text-hero-large xl:leading-[1.12] text-h1-sm font-normal mb-10"
-              data-aos="fade-up-sm"
-              data-aos-delay="100"
-            >
-              {title}
-            </h1>
-            <div
-              class="flex flex-col lg:flex-row items-center md:items-start gap-4 lg:gap-8"
-              data-aos="fade-up-sm"
-              data-aos-delay="150"
-            >
-              {
-                button && button.enable && (
-                  <RightArrowBtn
-                    link={button.link}
-                    label={button.label}
-                    className="btn btn-primary py-3"
-                  />
-                )
-              }
-              {
-                quote && (
-                  <p
-                    class="text-lg text-text/70"
-                    set:html={markdownify(quote)}
-                  />
-                )
-              }
-            </div>
-          </div>
-          <div class="md:col-span-6 pt-10 md:pt-0">
-            <div class="relative">
-              <canvas
-                class="absolute inset-0 w-full h-full overflow-hidden z-10 heroSporeCanvas"
-              ></canvas>
-              <div class="absolute inset-0 grid place-items-center">
-                <div
-                  class="flex items-center justify-center rotate-45 w-full h-full"
-                >
-                  <div
-                    class="w-2/6 h-3/6 bg-secondary blur-[80px] rounded-full"
-                    data-aos="fade-up-sm"
-                    data-aos-delay="100"
-                    data-aos-duration="1000"
-                  >
-                  </div>
-                  <div
-                    class="w-2/6 h-3/6 bg-tertiary blur-[80px] rounded-full"
-                    data-aos="fade-up-sm"
-                    data-aos-delay="200"
-                    data-aos-duration="1000"
-                  >
-                  </div>
-                </div>
-              </div>
-              <!-- Rotating Image -->
-              <div class="rotate-infinite relative z-20">
-                <ImageMod
-                  src={image.src}
-                  alt={image.alt}
-                  width={800}
-                  height={800}
-                  class="w-full aspect-square"
-                />
-              </div>
-            </div>
+      <div class="mt-8" data-reveal data-reveal-delay="320">
+        <ContractAddress />
+      </div>
+    </div>
+
+    <div class="relative mx-auto w-full max-w-[460px] lg:col-span-5 lg:max-w-none" data-reveal data-reveal-delay="200">
+      <div class="relative aspect-square">
+        <div
+          class="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(157,92,255,0.45),rgba(233,196,106,0.15)_45%,transparent_70%)] blur-2xl"
+        >
+        </div>
+        <svg viewBox="0 0 400 400" class="spin-slow absolute inset-0 h-full w-full" aria-hidden="true">
+          <defs>
+            <path id="ring-path" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0"></path>
+          </defs>
+          <circle cx="200" cy="200" r="192" fill="none" stroke="rgba(233,196,106,0.35)" stroke-width="1"></circle>
+          <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(233,196,106,0.25)" stroke-width="1"></circle>
+          <text class="fill-primary/80 font-secondary text-[15px] tracking-[0.32em]">
+            <textPath href="#ring-path">{ring}</textPath>
+          </text>
+        </svg>
+        <svg viewBox="0 0 400 400" class="spin-slow-reverse absolute inset-[6%] h-[88%] w-[88%]" aria-hidden="true">
+          <circle
+            cx="200"
+            cy="200"
+            r="196"
+            fill="none"
+            stroke="rgba(196,160,255,0.35)"
+            stroke-width="1.5"
+            stroke-dasharray="2 10"></circle>
+          {
+            [0, 60, 120, 180, 240, 300].map((deg) => (
+              <rect
+                x="195"
+                y="-1"
+                width="10"
+                height="10"
+                fill="#E9C46A"
+                transform={`rotate(${deg} 200 200) rotate(45 200 4)`}
+              />
+            ))
+          }
+        </svg>
+        <div class="float absolute inset-[19%]">
+          <div class="glow-gold h-full w-full overflow-hidden rounded-full border border-primary/40 shadow-2xl">
+            <Img
+              src="/images/magyk/emblem.jpg"
+              alt="The golden MAGYK emblem"
+              width={560}
+              height={560}
+              loading="eager"
+              class="h-full w-full scale-[1.12] object-cover"
+            />
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <a
+    href="#stats"
+    class="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-light transition-colors hover:text-primary md:flex"
+    aria-label="Scroll to learn more"
+  >
+    Explore
+    <span class="h-10 w-px bg-gradient-to-b from-primary to-transparent"></span>
+  </a>
 </section>
 
 <script>
-  import { sporeCanvas } from "@/lib/utils/particleCanvas";
+  import { emberCanvas } from "@/lib/utils/particleCanvas";
 
+  let cleanup: (() => void) | undefined;
   document.addEventListener("astro:page-load", () => {
-    const targetElementClassName = ".heroSporeCanvas";
-    const particleCount = 200;
-    const particleMinSize = 1;
-    const particleMaxSize = 5;
-    sporeCanvas(
-      targetElementClassName,
-      particleCount,
-      particleMinSize,
-      particleMaxSize,
-    );
+    cleanup?.();
+    const canvas = document.querySelector<HTMLCanvasElement>(".ember-canvas");
+    cleanup = canvas ? emberCanvas(canvas) : undefined;
   });
 </script>
-

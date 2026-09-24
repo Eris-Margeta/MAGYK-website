@@ -1,0 +1,32 @@
+---
+import config from "@/config/config.json";
+import { getEntry } from "astro:content";
+
+const { totalSupply, presale, mechanics } = (await getEntry("tokenomics", "tokenomics"))!.data;
+
+const stats = [
+  { value: totalSupply, label: "Total supply" },
+  { value: mechanics[0].value, label: mechanics[0].label },
+  { value: `${presale[0].percent}%`, label: "Of the presale raise to liquidity" },
+  { value: config.token.chain, label: "Layer 2 home network" },
+];
+---
+
+<section id="stats" class="relative z-10 -mt-12 lg:-mt-20">
+  <div class="container">
+    <dl class="card border-gradient grid grid-cols-2 divide-border overflow-hidden lg:grid-cols-4 lg:divide-x">
+      {
+        stats.map((stat, i) => (
+          <div
+            class={`flex flex-col-reverse p-6 text-center md:p-8 ${i < 2 ? "border-b border-border lg:border-b-0" : ""} ${i % 2 === 0 ? "border-r border-border lg:border-r-0" : ""}`}
+            data-reveal
+            data-reveal-delay={String(i * 80)}
+          >
+            <dt class="mt-2 text-sm text-light">{stat.label}</dt>
+            <dd class="text-gold font-secondary text-2xl font-bold md:text-4xl">{stat.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

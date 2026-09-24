@@ -1,113 +1,116 @@
 ---
+import ContractAddress from "@/components/ContractAddress.astro";
+import Icon from "@/components/Icon.astro";
 import Logo from "@/components/Logo.astro";
 import config from "@/config/config.json";
 import menu from "@/config/menu.json";
-import { markdownify } from "@/lib/utils/textConverter";
+import social from "@/config/social.json";
 
-// Function to replace {year} this from string to year
-function replaceYear(text: string) {
-  const year = new Date().getFullYear();
+const copyright = config.params.copyright.replace("{year}", new Date().getFullYear().toString());
+const { token, contact } = config;
 
-  return text.replace("{year}", year.toString());
-}
-interface FooterLink {
-  name: string;
-  url: string;
-}
-
-interface Footer {
-  company: FooterLink[];
-  others: FooterLink[];
-}
-
-const { footer }: { footer: Footer } = menu;
+const tokenLinks = [
+  { name: "Buy $MAGYK", url: token.sale_url },
+  { name: "Chart on DEXTools", url: token.dextools_url },
+  { name: "Block explorer", url: token.explorer_url },
+];
 ---
 
-<footer class="container xl:px-10">
-  <div class="pb-20 xl:pb-32">
-    <div class="flex flex-col gap-20 md:flex-row justify-between">
-      <!-- LEFT SIDE -->
-      <div class="flex gap-20 lg:gap-40">
+<footer class="relative mt-10 border-t border-border">
+  <div
+    class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+  >
+  </div>
+  <div class="container grid gap-12 py-16 lg:grid-cols-12 lg:py-20">
+    <div class="space-y-6 lg:col-span-5">
+      <Logo />
+      <p class="max-w-sm text-light">
+        A community-forged token and NFT realm on {token.chain}. Where limits and chains fade into mist.
+      </p>
+      <div class="flex flex-wrap items-center gap-3">
         {
-          footer.company && footer.company.length > 0 && (
-            <div data-aos="fade-right-sm" data-aos-delay="100">
-              <h3 class="text-sm text-light mb-10 uppercase">Company</h3>
-              <ul>
-                {footer.company.map((item) => (
-                  <li class="mb-2">
-                    <a
-                      href={item.url}
-                      class="text-text hover:text-text/70 transition-colors duration-300"
-                    >
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
+          social.main.map((s) => (
+            <a
+              href={s.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`MAGYK on ${s.name}`}
+              class="grid h-10 w-10 place-items-center rounded-full border border-border text-text transition-colors hover:border-primary/50 hover:text-primary"
+            >
+              <Icon name="x" size={18} />
+            </a>
+          ))
         }
-        {
-          footer.others && footer.others.length > 0 && (
-            <div data-aos="fade-right-sm" data-aos-delay="200">
-              <h3 class="text-sm text-light mb-10 uppercase">Others</h3>
-              <ul>
-                {footer.others.map((item) => (
-                  <li class="mb-2">
-                    <a
-                      href={item.url}
-                      class="text-text hover:text-text/70 transition-colors duration-300"
-                    >
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
+        <a
+          href={`mailto:${contact.email}`}
+          aria-label={`Email ${contact.email}`}
+          class="grid h-10 w-10 place-items-center rounded-full border border-border text-text transition-colors hover:border-primary/50 hover:text-primary"
+        >
+          <Icon name="mail" size={18} />
+        </a>
       </div>
-      <!-- RIGHT SIDE -->
-      <div class="max-w-[325px] lg:w-[325px]">
-        <div data-aos="fade-right-sm" data-aos-delay="300">
-          <h3 class="text-sm text-light mb-10 uppercase">STAY UP TO DATE</h3>
+    </div>
+
+    <div class="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-7">
+      <div>
+        <h3 class="mb-5 font-primary text-xs font-semibold uppercase tracking-[0.18em] text-light">Explore</h3>
+        <ul class="space-y-3">
           {
-            config.newsletter && (
-              <form
-                action={config.newsletter.input_action}
-                method="post"
-                class="flex flex-col gap-4"
-              >
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your email"
-                  class="w-full py-3 px-4 bg-theme-light placeholder:text-white text-light border border-border focus:outline-none transition-colors duration-300 rounded-lg"
-                  required
-                />
-                <button type="submit" class="btn btn-primary rounded-lg !py-2">
-                  Subscribe
-                </button>
-              </form>
-            )
+            menu.footer.explore.map((item) => (
+              <li>
+                <a href={item.url} class="text-text/85 transition-colors hover:text-primary">
+                  {item.name}
+                </a>
+              </li>
+            ))
           }
-        </div>
+        </ul>
+      </div>
+      <div>
+        <h3 class="mb-5 font-primary text-xs font-semibold uppercase tracking-[0.18em] text-light">Token</h3>
+        <ul class="space-y-3">
+          {
+            tokenLinks.map((item) => (
+              <li>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 text-text/85 transition-colors hover:text-primary"
+                >
+                  {item.name}
+                  <Icon name="external" size={13} class="opacity-60" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3 class="mb-5 font-primary text-xs font-semibold uppercase tracking-[0.18em] text-light">Legal</h3>
+        <ul class="space-y-3">
+          {
+            menu.footer.legal.map((item) => (
+              <li>
+                <a href={item.url} class="text-text/85 transition-colors hover:text-primary">
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </div>
-  <div class="border-t border-border/60 pt-10 pb-20">
-    <div
-      class="flex flex-col md:flex-row gap-y-10 justify-between md:items-center"
-    >
-      <div data-aos="fade-right-sm" data-aos-delay="100">
-        <Logo />
-      </div>
-      <p
-        class="text-sm text-text/70"
-        set:html={markdownify(replaceYear(config.params.copyright))}
-        data-aos="fade-right-sm"
-        data-aos-delay="300"
-      />
+
+  <div class="border-t border-border">
+    <div class="container flex flex-col gap-6 py-8 lg:flex-row lg:items-center lg:justify-between">
+      <ContractAddress />
+      <p class="text-sm text-light">{copyright}</p>
     </div>
+    <p class="container pb-10 text-xs leading-relaxed text-light/70">
+      Nothing on this website is financial advice. Crypto assets are highly volatile and you can lose the full amount
+      you put in. Always verify the contract address and do your own research before interacting with any token.
+    </p>
   </div>
 </footer>

@@ -1,0 +1,74 @@
+---
+import Icon from "@/components/Icon.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+import TokenDonut from "@/components/TokenDonut.astro";
+import { getEntry } from "astro:content";
+
+interface Props {
+  showLink?: boolean;
+}
+
+const { showLink = true } = Astro.props;
+const { totalSupply, allocation, mechanics } = (await getEntry("tokenomics", "tokenomics"))!.data;
+---
+
+<section class="section relative overflow-hidden">
+  <div class="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary/10 blur-3xl">
+  </div>
+  <div class="container">
+    <SectionTitle
+      eyebrow="Tokenomics"
+      title="An economy forged for the community"
+      description="Nearly the entire supply goes to the open market, while built-in burns and fees fund liquidity and development."
+    />
+
+    <div class="grid items-center gap-12 lg:grid-cols-12">
+      <div class="mx-auto w-full max-w-[420px] lg:col-span-5" data-reveal>
+        <TokenDonut segments={allocation} total={totalSupply} />
+      </div>
+
+      <div class="space-y-4 lg:col-span-7">
+        {
+          allocation.map((a, i) => (
+            <div
+              class="card flex items-center gap-5 p-5 md:p-6"
+              data-reveal
+              data-reveal-delay={String(i * 80)}
+            >
+              <span class="h-12 w-1.5 shrink-0 rounded-full" style={`background:${a.color}`} />
+              <div class="min-w-0 flex-1">
+                <p class="font-semibold text-text">{a.label}</p>
+                <p class="text-sm text-light">
+                  {a.description} · {a.tokens} tokens
+                </p>
+              </div>
+              <p class="font-secondary text-2xl font-bold md:text-3xl" style={`color:${a.color}`}>
+                {a.percent}%
+              </p>
+            </div>
+          ))
+        }
+
+        <div class="grid grid-cols-3 gap-3 pt-2" data-reveal>
+          {
+            mechanics.map((m) => (
+              <div class="rounded-xl border border-border bg-white/[0.02] p-4 text-center">
+                <p class="text-gold font-secondary text-2xl font-bold">{m.value}</p>
+                <p class="mt-1 text-xs text-light sm:text-sm">{m.label}</p>
+              </div>
+            ))
+          }
+        </div>
+
+        {
+          showLink && (
+            <a href="/tokenomics" class="btn btn-outline mt-4" data-reveal>
+              <Icon name="chart" size={18} />
+              Full tokenomics
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

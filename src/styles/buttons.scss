@@ -1,15 +1,30 @@
 .btn {
-  @apply inline-block rounded border border-transparent px-5 py-2 font-semibold capitalize transition;
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-transparent px-6 py-3 font-semibold transition duration-300;
 }
 
 .btn-sm {
-  @apply rounded-sm px-4 py-1.5 text-sm;
+  @apply px-4 py-2 text-sm;
 }
 
 .btn-primary {
-  @apply border-primary bg-primary hover:bg-white text-dark/85 rounded-full transition-colors duration-500;
+  @apply text-dark;
+  background-image: linear-gradient(135deg, #fff1b8 0%, #e9c46a 45%, #c8932f 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 241, 184, 0.35) inset,
+    0 10px 30px -10px rgba(233, 196, 106, 0.55);
+
+  &:hover {
+    box-shadow:
+      0 0 0 1px rgba(255, 241, 184, 0.6) inset,
+      0 14px 40px -8px rgba(233, 196, 106, 0.75);
+    transform: translateY(-1px);
+  }
 }
 
-.btn-outline-primary {
-  @apply border-border text-text hover:bg-dark  bg-transparent hover:text-text/80 rounded-full transition-colors duration-500;
+.btn-outline {
+  @apply border-white/15 bg-white/[0.03] text-text backdrop-blur hover:border-primary/60 hover:bg-primary/10 hover:text-white;
+}
+
+.btn-ghost {
+  @apply text-text/80 hover:text-white;
 }

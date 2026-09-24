@@ -1,9 +1,15 @@
 html {
-  @apply text-base-sm md:text-base;
+  @apply scroll-smooth text-base-sm md:text-base;
+  scroll-padding-top: 6rem;
+  color-scheme: dark;
 }
 
 body {
-  @apply bg-body text-base font-primary font-normal leading-relaxed text-text antialiased;
+  @apply bg-body font-primary text-base font-normal leading-relaxed text-text antialiased;
+  background-image:
+    radial-gradient(60rem 40rem at 85% -10%, rgba(157, 92, 255, 0.12), transparent 60%),
+    radial-gradient(50rem 30rem at -10% 40%, rgba(233, 196, 106, 0.05), transparent 60%);
+  background-attachment: fixed;
 }
 
 h1,
@@ -12,7 +18,8 @@ h3,
 h4,
 h5,
 h6 {
-  @apply font-secondary font-normal leading-tight;
+  @apply font-secondary font-semibold leading-[1.1] tracking-[0.01em] text-text;
+  text-wrap: balance;
 }
 
 h1,
@@ -45,15 +52,30 @@ h6,
   @apply text-h6;
 }
 
+p {
+  text-wrap: pretty;
+}
+
 b,
 strong {
   @apply font-semibold;
 }
 
-code {
-  @apply after:border-none;
+::selection {
+  @apply bg-primary/30 text-white;
 }
 
-blockquote > p {
-  @apply my-0 #{!important};
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-body;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

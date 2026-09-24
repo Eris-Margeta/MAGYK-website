@@ -1,26 +1,37 @@
 ---
-import CallToActionSmall from "@/components/CallToActionSmall.astro";
-import WhyUs from "@/components/WhyUs.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
 import Base from "@/layouts/Base.astro";
 import CallToAction from "@/partials/CallToAction.astro";
 import Faq from "@/partials/Faq.astro";
+import Features from "@/partials/Features.astro";
 import HomeBanner from "@/partials/HomeBanner.astro";
-import HowItWorks from "@/partials/HowItWorks.astro";
-import Services from "@/partials/Services.astro";
-import ServiceSummaryCards from "@/partials/ServiceSummaryCards.astro";
-import Testimonial from "@/partials/Testimonial.astro";
-import TrustedBrands from "@/partials/TrustedBrands.astro";
+import Roadmap from "@/partials/Roadmap.astro";
+import Team from "@/partials/Team.astro";
+import TokenomicsOverview from "@/partials/TokenomicsOverview.astro";
+import TokenStats from "@/partials/TokenStats.astro";
+import Vision from "@/partials/Vision.astro";
 ---
 
 <Base>
   <HomeBanner />
-  <TrustedBrands />
-  <ServiceSummaryCards />
-  <Services />
-  <WhyUs />
-  <CallToActionSmall />
-  <HowItWorks />
-  <Testimonial />
+  <TokenStats />
+  <Vision />
+  <Features />
+  <TokenomicsOverview />
+  <section class="section">
+    <div class="container">
+      <SectionTitle
+        eyebrow="Roadmap"
+        title="The grand work: five stages of enchantment"
+        description="Each stage is a sigil upon the Book of Magyk, guiding the realm from its first token to a native blockchain."
+      />
+      <Roadmap variant="compact" />
+      <div class="mt-12 text-center" data-reveal>
+        <a href="/roadmap" class="btn btn-outline">Explore the full roadmap</a>
+      </div>
+    </div>
+  </section>
+  <Team showBio={false} />
   <Faq />
   <CallToAction />
 </Base>

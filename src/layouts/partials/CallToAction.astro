@@ -1,117 +1,41 @@
 ---
-import GradientTitle from "@/components/GradientTitle.astro";
-import ImageMod from "@/components/ImageMod.astro";
-import RightArrowBtn from "@/components/RightArrowBtn.astro";
-import { markdownify } from "@/lib/utils/textConverter";
-import type { CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
+import Icon from "@/components/Icon.astro";
+import Img from "@/components/Img.astro";
+import config from "@/config/config.json";
+import social from "@/config/social.json";
 
-const { head, title, description, button, shapes } = (
-  (await getEntry("cta", "call-to-action")) as CollectionEntry<"cta">
-).data;
+const x = social.main[0];
 ---
 
 <section class="section">
-  <div class="container xl:px-10">
-    <div
-      class="px-12 py-32 rounded-2xl border border-border/50 bg-theme-light/70 mx-auto isolate overflow-hidden bg-cta-image"
-    >
-      <div
-        class="absolute left-1/2 -translate-x-1/2 md:translate-y-[65%] aspect-square w-full bottom-0 z-10"
-      >
-        <canvas
-          class="ctaSporeCanvas"
-          id="ctaCanvas"
-          width="600"
-          height="600"
-          style="width: 100%; height: 100%;"></canvas>
-      </div>
-      <div
-        class="absolute left-1/2 -translate-x-1/2 aspect-square bottom-0 -z-40 w-2/6 lg:w-2/6"
-      >
-        <div class="absolute inset-0 grid place-items-center -rotate-12">
-          <div
-            class="flex items-center justify-center rotate-0 w-full h-full -z-40 relative"
-          >
-            <div
-              class="w-3/6 h-3/6 bg-secondary blur-[80px] translate-x-6 rounded-full"
-              data-aos="fade-in"
-              data-aos-delay="100"
-            >
-            </div>
-            <div
-              class="w-5/6 h-5/6 bg-tertiary blur-[60px] rounded-full"
-              data-aos="fade-in"
-              data-aos-delay="200"
-            >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="flex flex-col gap-8 items-center justify-between text-center xl:col-7 mx-auto relative z-10"
-      >
-        <GradientTitle title={head} />
-        <div>
-          <h2 set:html={markdownify(title)} class="mb-4" />
-          <p set:html={markdownify(description)} class="text-text/80 text-lg" />
-        </div>
-        {
-          button.enable && (
-            <RightArrowBtn
-              link={button.link}
-              label={button.label}
-              className="btn btn-primary"
-            />
-          )
-        }
-      </div>
-
-      <!-- shapes -->
-      <div class="absolute inset-0">
-        <ImageMod
-          src={shapes[0].image}
-          alt=""
-          class="absolute top-[60px] left-[50px] w-[60px] lg:w-[141px]"
-          width={141}
-          height={123}
-        />
-        <ImageMod
-          src={shapes[1].image}
-          alt=""
-          class="absolute bottom-[60px] right-0 translate-x-[20px] w-[60px] lg:w-[195px]"
-          width={195}
-          height={207}
-        />
+  <div class="container">
+    <div class="border-gradient relative isolate overflow-hidden rounded-[2rem] px-6 py-20 text-center md:px-16 md:py-28" data-reveal>
+      <Img
+        src="/images/magyk/realm.jpg"
+        alt=""
+        width={1400}
+        height={1400}
+        sizes="100vw"
+        class="absolute inset-0 -z-20 h-full w-full object-cover object-[center_35%] opacity-60"
+      />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-body via-body/70 to-body/40"></div>
+      <span class="eyebrow">The spells have been cast</span>
+      <h2 class="mx-auto mt-6 max-w-3xl text-h2-sm md:text-h1">
+        Step into the <span class="text-gold">realm of MAGYK</span>
+      </h2>
+      <p class="mx-auto mt-6 max-w-xl text-lg text-text/80">
+        Grab {config.token.symbol} on {config.token.chain} and follow along as the next stages of the roadmap unfold.
+      </p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={config.token.sale_url} target="_blank" rel="noopener noreferrer" class="btn btn-primary px-8 py-4 text-base">
+          Buy {config.token.symbol}
+          <Icon name="arrow" size={18} />
+        </a>
+        <a href={x.link} target="_blank" rel="noopener noreferrer" class="btn btn-outline px-8 py-4 text-base">
+          <Icon name="x" size={16} />
+          Follow @MAGYKcrypto
+        </a>
       </div>
     </div>
   </div>
 </section>
-
-<script>
-  import { sporeCanvas } from "@/lib/utils/particleCanvas";
-
-  document.addEventListener("astro:page-load", () => {
-    const targetElementClassName = "#ctaCanvas";
-    const particleCount = 150;
-    const particleMinSize = 0.2;
-    const particleMaxSize = 3;
-    const particleMinSpeed = 0.1;
-    const particleMaxSpeed = 0.2;
-    const particleWobbleSpeed = 0.2;
-    const particleWobble = 0.5;
-    const canvasSize = 1400;
-    sporeCanvas(
-      targetElementClassName,
-      particleCount,
-      particleMinSize,
-      particleMaxSize,
-      particleMinSpeed,
-      particleMaxSpeed,
-      particleWobbleSpeed,
-      particleWobble,
-      canvasSize
-    );
-  });
-</script>

@@ -1,44 +1,16 @@
 ---
 import config from "@/config/config.json";
-import ImageMod from "./ImageMod.astro";
 
-const { src }: { src?: string } = Astro.props;
-const {
-  logo,
-  logo_width,
-  logo_height,
-  logo_text,
-  title,
-}: {
-  logo: string;
-  logo_width: any;
-  logo_height: any;
-  logo_text: string;
-  title: string;
-} = config.site;
+const { class: className = "" } = Astro.props;
 ---
 
-<a href="/" class="navbar-brand inline-block">
-  {
-    src || logo ? (
-      <>
-        <ImageMod
-          src={src ? src : logo}
-          class={`inline-block`}
-          width={logo_width.replace("px", "") * 2}
-          height={logo_height.replace("px", "") * 2}
-          alt={title}
-          style={{
-            height: logo_height.replace("px", "") + "px",
-            width: logo_width.replace("px", "") + "px",
-          }}
-          format="webp"
-        />
-      </>
-    ) : logo_text ? (
-      logo_text
-    ) : (
-      title
-    )
-  }
+<a href="/" class={`group inline-flex items-center gap-2.5 ${className}`} aria-label={`${config.site.title} home`}>
+  <img
+    src="/images/magyk/sigil.svg"
+    alt=""
+    width="36"
+    height="36"
+    class="h-9 w-9 transition-transform duration-700 group-hover:rotate-[360deg]"
+  />
+  <span class="font-secondary text-2xl font-bold tracking-[0.12em] text-gold">{config.site.logo_text}</span>
 </a>

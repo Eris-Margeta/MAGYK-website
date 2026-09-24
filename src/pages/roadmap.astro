@@ -1,0 +1,23 @@
+---
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import PageHero from "@/partials/PageHero.astro";
+import Roadmap from "@/partials/Roadmap.astro";
+---
+
+<Base
+  title="Roadmap"
+  description="The MAGYK roadmap: five stages from the v1.0 token launch and ERC-404 NFTs to Pfife, the MAGYK blockchain and the Book of Magyk."
+>
+  <PageHero
+    eyebrow="Roadmap"
+    title="The grand work: stages of enchantment"
+    description="The path to true power is unveiled in five sacred stages, each a sigil upon the Book of Magyk, guiding us toward our ascension."
+  />
+  <section class="section pt-8">
+    <div class="container">
+      <Roadmap variant="full" />
+    </div>
+  </section>
+  <CallToAction />
+</Base>

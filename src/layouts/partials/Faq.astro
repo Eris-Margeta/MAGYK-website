@@ -1,30 +1,49 @@
 ---
-import GradientTitle from "@/components/GradientTitle.astro";
-import Accordion from "@/shortcodes/Accordion";
-import type { CollectionEntry } from "astro:content";
+import Icon from "@/components/Icon.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
 import { getEntry } from "astro:content";
 
-const { head, title, list } = (
-  (await getEntry("faq", "faq")) as CollectionEntry<"faq">
-).data;
+const { list } = (await getEntry("faq", "faq"))!.data;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: list.map((f) => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer },
+  })),
+};
 ---
 
 <section class="section">
-  <div class="container lg:px-24">
-    <div class="section-intro text-center">
-      <GradientTitle title={head} data-aos="fade-up-sm" data-aos-delay="100" />
-      <h2 data-aos="fade-up-sm" data-aos-delay="150">{title}</h2>
+  <div class="container grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <div class="lg:sticky lg:top-32">
+        <SectionTitle
+          align="left"
+          eyebrow="Got mystical queries?"
+          title="Frequently asked questions"
+          description="Still curious? Reach the team on X or by email and we'll answer."
+        />
+        <a href="/contact" class="btn btn-outline" data-reveal>Contact the team</a>
+      </div>
     </div>
-    <div class="section-content" data-aos="fade-up-sm" data-aos-delay="200">
+    <div class="lg:col-span-8" data-reveal>
       {
-        list &&
-          list.length &&
-          list.map((faq) => (
-            <Accordion client:load title={faq.question}>
-              {faq.answer}
-            </Accordion>
-          ))
+        list.map((faq, i) => (
+          <details class="faq-item" open={i === 0}>
+            <summary>
+              {faq.question}
+              <span class="faq-icon">
+                <Icon name="plus" size={18} />
+              </span>
+            </summary>
+            <p class="faq-answer">{faq.answer}</p>
+          </details>
+        ))
       }
     </div>
   </div>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </section>
