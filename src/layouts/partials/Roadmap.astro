@@ -14,8 +14,7 @@ const statusLabel = { current: "In progress", upcoming: "Upcoming", sealed: "Sea
 
 {
   variant === "compact" ? (
-    <ol class="relative grid gap-4 md:grid-cols-5">
-      <div class="absolute left-0 right-0 top-[1.4rem] hidden h-px bg-gradient-to-r from-primary via-secondary/50 to-transparent md:block" />
+    <ol class="relative grid gap-4 before:absolute before:left-0 before:right-0 before:top-[1.4rem] before:hidden before:h-px before:bg-gradient-to-r before:from-primary before:via-secondary/50 before:to-transparent md:grid-cols-5 md:before:block">
       {stages.map((s, i) => (
         <li class="relative" data-reveal data-reveal-delay={String(i * 90)}>
           <div
@@ -37,10 +36,9 @@ const statusLabel = { current: "In progress", upcoming: "Upcoming", sealed: "Sea
       ))}
     </ol>
   ) : (
-    <ol class="relative mx-auto max-w-4xl">
-      <div class="absolute bottom-0 left-[1.35rem] top-0 w-px bg-gradient-to-b from-primary via-secondary/40 to-transparent md:left-1/2" />
+    <ol class="relative mx-auto max-w-4xl before:absolute before:bottom-0 before:left-[1.35rem] before:top-0 before:w-px before:bg-gradient-to-b before:from-primary before:via-secondary/40 before:to-transparent md:before:left-1/2">
       {stages.map((s, i) => (
-        <li class={`relative mb-12 grid gap-6 pl-16 md:grid-cols-2 md:gap-16 md:pl-0 ${i % 2 ? "" : "md:[&>div]:col-start-2"}`}>
+        <li class="relative mb-12 grid gap-6 pl-16 md:grid-cols-2 md:gap-16 md:pl-0">
           <div
             class={`absolute left-0 top-2 z-10 grid h-11 w-11 place-items-center rounded-full border font-secondary font-bold md:left-1/2 md:-translate-x-1/2 ${
               s.status === "current"
@@ -51,7 +49,7 @@ const statusLabel = { current: "In progress", upcoming: "Upcoming", sealed: "Sea
             {s.status === "sealed" ? <Icon name="lock" size={16} /> : s.stage}
           </div>
           <div
-            class={`card border-gradient p-7 md:p-8 ${i % 2 ? "md:text-right" : ""}`}
+            class={`card border-gradient p-7 md:p-8 ${i % 2 ? "md:text-right" : "md:col-start-2"}`}
             data-reveal
           >
             <div class={`flex flex-wrap items-center gap-3 ${i % 2 ? "md:justify-end" : ""}`}>

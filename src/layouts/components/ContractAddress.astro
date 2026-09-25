@@ -42,17 +42,7 @@ const short = `${contract_address.slice(0, 6)}…${contract_address.slice(-4)}`;
       if (btn.dataset.bound) return;
       btn.dataset.bound = "true";
       btn.addEventListener("click", async () => {
-        const address = btn.dataset.address ?? "";
-        try {
-          await navigator.clipboard.writeText(address);
-        } catch {
-          const input = document.createElement("textarea");
-          input.value = address;
-          document.body.append(input);
-          input.select();
-          document.execCommand("copy");
-          input.remove();
-        }
+        await navigator.clipboard.writeText(btn.dataset.address ?? "");
         const idle = btn.querySelector(".copy-idle");
         const done = btn.querySelector(".copy-done");
         const toast = btn.querySelector<HTMLElement>(".copy-toast");

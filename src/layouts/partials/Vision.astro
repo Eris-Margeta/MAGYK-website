@@ -5,7 +5,7 @@ import { getEntry } from "astro:content";
 const { eyebrow, title, paragraphs, quote } = (await getEntry("vision", "vision"))!.data;
 ---
 
-<section class="section">
+<section class="section overflow-x-clip">
   <div class="container grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
     <div class="relative" data-reveal>
       <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-secondary/20 blur-3xl"></div>

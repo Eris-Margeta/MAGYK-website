@@ -22,7 +22,7 @@ const whitepaper = defineCollection({
   }),
 });
 
-const section = (pattern: string, schema: z.ZodTypeAny) =>
+const section = <T extends z.ZodTypeAny>(pattern: string, schema: T) =>
   defineCollection({
     loader: glob({ pattern, base: "src/content/sections" }),
     schema,

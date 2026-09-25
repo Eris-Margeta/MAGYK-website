@@ -21,7 +21,7 @@
     "marked": "^15.0.6"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "0.9.4",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "22.10.6",
@@ -36,6 +36,12 @@
     "typescript": "5.7.3"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ],
+    "overrides": {
+      "@astrojs/language-server": "2.15.4"
+    }
   }
 }

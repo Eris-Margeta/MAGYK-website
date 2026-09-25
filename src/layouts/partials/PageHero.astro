@@ -15,9 +15,11 @@ const { eyebrow, title, description, image = "/images/magyk/forest.jpg" } = Astr
   <Img
     src={image}
     alt=""
-    width={1600}
-    height={1600}
+    width={1024}
+    height={1024}
+    widths={[640, 1024]}
     sizes="100vw"
+    quality={55}
     loading="eager"
     fetchpriority="high"
     class="absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-30"
