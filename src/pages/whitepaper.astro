@@ -1,0 +1,76 @@
+---
+import Icon from "@/components/Icon.astro";
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import PageHero from "@/partials/PageHero.astro";
+import { getEntry, render } from "astro:content";
+
+const entry = (await getEntry("whitepaper", "whitepaper"))!;
+const { Content, headings } = await render(entry);
+const { title, meta_title, description, subtitle } = entry.data;
+const toc = headings.filter((h) => h.depth === 2);
+---
+
+<Base title={title} meta_title={meta_title} description={description}>
+  <PageHero eyebrow="Whitepaper" title={title} description={subtitle} image="/images/magyk/council.jpg" />
+
+  <section class="section pt-4">
+    <div class="container grid gap-12 lg:grid-cols-12">
+      <aside class="lg:col-span-3">
+        <nav class="card p-6 lg:sticky lg:top-28" aria-label="Whitepaper contents">
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-light">Contents</p>
+          <ol class="space-y-1">
+            {
+              toc.map((h, i) => (
+                <li>
+                  <a
+                    href={`#${h.slug}`}
+                    class="toc-link flex gap-3 rounded-lg px-3 py-2 text-sm text-text/75 transition-colors hover:bg-white/5 hover:text-white"
+                  >
+                    <span class="font-secondary text-primary">{String(i + 1).padStart(2, "0")}</span>
+                    {h.text}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+          <div class="mt-6 border-t border-border pt-6">
+            <a href={config.token.sale_url} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm w-full">
+              Buy {config.token.symbol}
+              <Icon name="arrow" size={14} />
+            </a>
+          </div>
+        </nav>
+      </aside>
+      <article class="content lg:col-span-8 lg:col-start-5" data-reveal>
+        <Content />
+      </article>
+    </div>
+  </section>
+
+  <CallToAction />
+</Base>
+
+<script>
+  function initToc() {
+    const links = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
+    if (!links.length) return;
+    const byId = new Map([...links].map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          links.forEach((a) => a.classList.remove("!text-primary", "bg-white/5"));
+          byId.get(entry.target.id)?.classList.add("!text-primary", "bg-white/5");
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px" },
+    );
+    byId.forEach((_, id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  }
+  document.addEventListener("astro:page-load", initToc);
+</script>

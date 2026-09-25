@@ -1,0 +1,38 @@
+---
+import Img from "@/components/Img.astro";
+import { getEntry } from "astro:content";
+
+const { eyebrow, title, paragraphs, quote } = (await getEntry("vision", "vision"))!.data;
+---
+
+<section class="section overflow-x-clip">
+  <div class="container grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+    <div class="relative" data-reveal>
+      <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-secondary/20 blur-3xl"></div>
+      <div class="border-gradient overflow-hidden rounded-[1.75rem]">
+        <Img
+          src="/images/magyk/council.jpg"
+          alt="A council of wizards gathered around a glowing cauldron beneath the MAGYK banner"
+          width={720}
+          height={720}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          class="aspect-square w-full object-cover"
+        />
+      </div>
+      <figure class="card absolute -bottom-8 right-4 max-w-[18rem] p-5 shadow-2xl sm:right-8">
+        <blockquote class="font-secondary text-lg leading-snug text-text">“{quote}”</blockquote>
+      </figure>
+    </div>
+    <div class="pt-6 lg:pt-0">
+      <div class="space-y-6" data-reveal>
+        <span class="eyebrow">{eyebrow}</span>
+        <h2>{title}</h2>
+        {paragraphs.map((p) => <p class="text-lg text-light">{p}</p>)}
+        <a href="/about" class="group inline-flex items-center gap-2 font-semibold text-primary">
+          Meet the realm
+          <span class="transition-transform group-hover:translate-x-1">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

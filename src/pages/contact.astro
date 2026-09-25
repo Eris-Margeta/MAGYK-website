@@ -1,22 +1,110 @@
 ---
+import Icon from "@/components/Icon.astro";
+import config from "@/config/config.json";
+import social from "@/config/social.json";
 import Base from "@/layouts/Base.astro";
-import CallToAction from "@/partials/CallToAction.astro";
-import ContactFormSection from "@/partials/ContactFormSection.astro";
-import PageHeader from "@/partials/PageHeader.astro";
-import SocialLinks from "@/partials/SocialLinks.astro";
-import type { CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
+import PageHero from "@/partials/PageHero.astro";
 
-const { title, description, meta_title, pageHeader } = (
-  (await getEntry(
-    "contactPageCollection",
-    "-index"
-  )) as CollectionEntry<"contactPageCollection">
-).data;
+const { contact } = config;
+const x = social.main[0];
+
+const channels = [
+  { icon: "x", label: "X (Twitter)", value: "@MAGYKcrypto", href: x.link, external: true },
+  { icon: "mail", label: "Email", value: contact.email, href: `mailto:${contact.email}`, external: false },
+  { icon: "phone", label: "Phone", value: contact.phone, href: `tel:${contact.phone_href}`, external: false },
+];
 ---
 
-<Base title={title} meta_title={meta_title} description={description}>
-  <ContactFormSection pageHeader={pageHeader} />
-  <SocialLinks />
-  <CallToAction />
+<Base
+  title="Contact"
+  description="Get in touch with MAGYK about partnerships, collaborations or questions about the project."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Let’s create something extraordinary"
+    description="Interested in partnering, learning more about our vision or exploring opportunities in crypto and NFTs? We’d love to hear from you."
+  />
+
+  <section class="section pt-4">
+    <div class="container grid gap-8 lg:grid-cols-12">
+      <div class="space-y-4 lg:col-span-5">
+        {
+          channels.map((c, i) => (
+            <a
+              href={c.href}
+              target={c.external ? "_blank" : undefined}
+              rel={c.external ? "noopener noreferrer" : undefined}
+              class="card card-hover flex items-center gap-5 p-6"
+              data-reveal
+              data-reveal-delay={String(i * 80)}
+            >
+              <span class="icon-badge">
+                <Icon name={c.icon} size={20} />
+              </span>
+              <span>
+                <span class="block text-sm text-light">{c.label}</span>
+                <span class="block text-lg font-semibold text-text">{c.value}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      <form id="contact-form" class="card border-gradient space-y-5 p-6 md:p-10 lg:col-span-7" data-reveal data-email={contact.email}>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label for="name" class="form-label">Name</label>
+            <input id="name" name="name" type="text" class="form-input" placeholder="Merlin" autocomplete="name" required />
+          </div>
+          <div>
+            <label for="email" class="form-label">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              class="form-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+        <div>
+          <label for="topic" class="form-label">Topic</label>
+          <select id="topic" name="topic" class="form-input">
+            <option>Partnership</option>
+            <option>Collaboration</option>
+            <option>Press</option>
+            <option>General question</option>
+          </select>
+        </div>
+        <div>
+          <label for="message" class="form-label">Message</label>
+          <textarea id="message" name="message" rows="6" class="form-input" placeholder="Tell us about your quest…" required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-full sm:w-auto">
+          Send message
+          <Icon name="arrow" size={16} />
+        </button>
+        <p class="text-sm text-light">This opens your email app with the message ready to send to {contact.email}.</p>
+      </form>
+    </div>
+  </section>
 </Base>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = "true";
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const subject = `[${data.get("topic")}] Message from ${data.get("name")}`;
+      const body = `${data.get("message")}\n\n${data.get("name")}\n${data.get("email")}`;
+      window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  }
+  document.addEventListener("astro:page-load", initContactForm);
+</script>

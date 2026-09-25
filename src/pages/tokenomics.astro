@@ -1,0 +1,111 @@
+---
+import ContractAddress from "@/components/ContractAddress.astro";
+import Icon from "@/components/Icon.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import PageHero from "@/partials/PageHero.astro";
+import TokenomicsOverview from "@/partials/TokenomicsOverview.astro";
+import { getEntry } from "astro:content";
+
+const { presale, versions } = (await getEntry("tokenomics", "tokenomics"))!.data;
+const { token } = config;
+---
+
+<Base
+  title="Tokenomics"
+  description="$MAGYK tokenomics: 999,999,999 total supply, 93.34% to the open market, a 3% automated burn and 50% of the presale raise added to liquidity."
+>
+  <PageHero
+    eyebrow="Tokenomics"
+    title="The MAGYK supply breakdown"
+    description="An economic model designed for sustainability and equitable distribution."
+    image="/images/magyk/emblem.jpg"
+  >
+    <div class="mt-10 flex flex-col items-center gap-4" data-reveal data-reveal-delay="240">
+      <ContractAddress />
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href={token.sale_url} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          Buy {token.symbol}
+          <Icon name="arrow" size={16} />
+        </a>
+        <a href={token.dextools_url} target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+          <Icon name="chart" size={16} />
+          DEXTools chart
+        </a>
+      </div>
+    </div>
+  </PageHero>
+
+  <TokenomicsOverview showLink={false} />
+
+  <section class="section pt-0">
+    <div class="container">
+      <SectionTitle
+        eyebrow="Presale"
+        title="Where the presale raise goes"
+        description="Every presale contribution is split evenly between deep liquidity and building the realm."
+      />
+      <div class="card mx-auto max-w-4xl p-6 md:p-10" data-reveal>
+        <div class="flex h-5 overflow-hidden rounded-full">
+          <div class="h-full bg-gradient-to-r from-[#fff1b8] to-primary" style={`width:${presale[0].percent}%`}></div>
+          <div class="h-full w-1 bg-body"></div>
+          <div class="h-full flex-1 bg-gradient-to-r from-secondary to-[#6d3fd6]"></div>
+        </div>
+        <div class="mt-8 grid gap-6 sm:grid-cols-2">
+          {
+            presale.map((p, i) => (
+              <div class="flex items-start gap-4">
+                <span class={`mt-1.5 h-3 w-3 shrink-0 rounded-full ${i === 0 ? "bg-primary" : "bg-secondary"}`} />
+                <div>
+                  <p class={`font-secondary text-4xl font-bold ${i === 0 ? "text-gold" : "text-secondary"}`}>{p.percent}%</p>
+                  <p class="mt-1 text-light">{p.label}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <SectionTitle
+        eyebrow="Token evolution"
+        title="From Optimism to the MAGYK Network"
+        description="The v1.0 token is live today. v2.0 and the ERC-404 NFTs arrive as the roadmap unfolds."
+      />
+      <div class="grid gap-6 lg:grid-cols-3">
+        {
+          versions.map((v, i) => (
+            <article class={`card card-hover p-8 ${i === 0 ? "border-gradient" : ""}`} data-reveal data-reveal-delay={String(i * 100)}>
+              <div class="flex items-center justify-between">
+                <span class="font-secondary text-3xl font-bold text-gold">{v.tag}</span>
+                <span
+                  class={`rounded-full px-3 py-1 text-xs font-semibold ${
+                    v.status === "Live" ? "bg-emerald-400/15 text-emerald-300" : "bg-white/5 text-light"
+                  }`}
+                >
+                  {v.status}
+                </span>
+              </div>
+              <h3 class="mt-4 font-primary text-xl font-semibold tracking-normal">{v.title}</h3>
+              <ul class="mt-6 space-y-3">
+                {v.points.map((pt) => (
+                  <li class="flex gap-3 text-light">
+                    <Icon name="check" size={18} class="mt-0.5 shrink-0 text-primary" />
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CallToAction />
+</Base>

@@ -1,156 +1,110 @@
 ---
-import menu from "@/config/menu.json";
-import config from "@/config/config.json";
+import Icon from "@/components/Icon.astro";
 import Logo from "@/components/Logo.astro";
-import RightArrowBtn from "@/components/RightArrowBtn.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
 
-export interface ChildNavigationLink {
-  name: string;
-  url: string;
-}
-
-export interface NavigationLink {
-  name: string;
-  url: string;
-  hasChildren?: boolean;
-  children?: ChildNavigationLink[];
-}
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (url: string) => path === url || path.startsWith(`${url}/`);
+const cta = config.navigation_button;
 ---
 
-<header class="header z-30">
-  <nav class="navbar container">
-    <!-- logo -->
-    <div class="order-0 flex items-center gap-10">
-      <Logo />
-      <!-- NAV MENU DESKTOP ONLY-->
-      <ul
-        id="nav-menu"
-        class="navbar-nav shadow-inset shadow-shadow/30 lg:shadow-none order-3 hidden lg:order-1 lg:flex items-center lg:w-auto lg:space-x-2 lg:pb-0"
-      >
-        {
-          menu.main.map((item) => (
-            <li class={`nav-item  ${item.hasChildren ? " group relative" : ""}`}>
-              {item.hasChildren ? (
-                <span class="nav-link inline-flex items-center cursor-pointer">
-                  {item.name}
-                  <svg
-                    class="h-4 w-4 fill-current group-hover:-rotate-180 ml-2 transition-transform duration-500"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                  </svg>
-                </span>
-              ) : (
-                <a href={item.url} aria-label={item.name} class="nav-link inline-flex items-center cursor-pointer">
-                  {item.name}
-                </a>
-              )}
-              {item.hasChildren && (
-                <ul class="hidden border border-border p-8 mb-2 lg:mb-0 lg:transition-[opacity_transform] lg:duration-500 lg:absolute lg:invisible lg:group-hover:visible lg:opacity-0 lg:group-hover:opacity-100 lg:scale-95 lg:group-hover:scale-100 lg:flex lg:flex-col lg:gap-y-2 min-w-max nav-dropdown-list">
-                  {item.children.map((child: any) => (
-                    <li class="nav-dropdown-item">
-                      <a href={child.url} class="nav-dropdown-link">
-                        {child.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+<header class="site-header" data-scrolled="false">
+  <nav class="container flex h-20 items-center justify-between gap-6" aria-label="Main">
+    <Logo />
 
-    <!-- navbar toggler -->
-    <input id="nav-toggle" type="checkbox" class="hidden" title="nav-toggle" />
-    <label for="nav-toggle" class="order-3 cursor-pointer flex items-center lg:hidden text-white/70 lg:order-1">
-      <div class="space-y-3 w-6 -translate-y-[20%]" id="show-button">
-        <title class="hidden">Menu Open</title>
-        <div class="w-[130%] md:w-full h-[2px] bg-text transition-transform" id="ham_top"></div>
-        <div class="w-[130%] md:w-full h-[2px] bg-text transition-transform" id="ham_bottom"></div>
-      </div>
-    </label>
-
-    <!-- /navbar toggler : MOBILE ONLY -->
-    <ul
-      id="nav-menu"
-      class="lg:hidden navbar-nav shadow-inset shadow-shadow/30 lg:shadow-none order-3 hidden lg:order-1 items-center lg:w-auto lg:space-x-2 lg:pb-0 inset-x-0 mx-auto"
-    >
+    <ul class="hidden items-center gap-1 lg:flex">
       {
         menu.main.map((item) => (
-          <li
-            id={item.hasChildren ? "all-pages" : null}
-            class={`nav-item ${item.hasChildren ? "nav-dropdown group relative" : ""}`}
-          >
-            {item.hasChildren ? (
-              <span class="nav-link inline-flex items-center cursor-pointer">
-                {item.name}
-                <svg
-                  class="h-4 w-4 fill-current group-hover:-rotate-180 ml-2 transition-transform duration-500"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </span>
-            ) : (
-              <a href={item.url} aria-label={item.name} class=" nav-link inline-flex items-center cursor-pointer">
-                {item.name}
-              </a>
-            )}
-            {item.hasChildren && (
-              <ul
-                class="hidden border border-border p-8 mb-2 lg:mb-0 lg:transition-[opacity_transform] lg:duration-500 lg:absolute lg:invisible lg:group-hover:visible lg:opacity-0 lg:group-hover:opacity-100 lg:scale-95 lg:group-hover:scale-100 lg:flex lg:flex-col lg:gap-y-2 min-w-max nav-dropdown-list"
-                id={item.hasChildren ? "all-pages-dropdown" : null}
-              >
-                {item.children.map((child: any) => (
-                  <li class="nav-dropdown-item">
-                    <a href={child.url} class="nav-dropdown-link">
-                      {child.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
+          <li>
+            <a href={item.url} class="nav-link" aria-current={isActive(item.url) ? "page" : undefined}>
+              {item.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-3">
+      {
+        cta.enable && (
+          <a href={cta.link} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm hidden sm:inline-flex">
+            {cta.label}
+            <Icon name="arrow" size={16} />
+          </a>
+        )
+      }
+      <button
+        type="button"
+        class="menu-toggle grid h-11 w-11 place-items-center rounded-full border border-border text-text lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <span class="menu-open"><Icon name="menu" size={20} /></span>
+        <span class="menu-close hidden"><Icon name="close" size={20} /></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="hidden border-t border-white/5 bg-body/95 backdrop-blur-xl lg:hidden">
+    <ul class="container flex flex-col gap-1 py-6">
+      {
+        menu.main.map((item) => (
+          <li>
+            <a
+              href={item.url}
+              class="block rounded-xl px-4 py-3 font-secondary text-xl text-text hover:bg-white/5 aria-[current=page]:text-primary"
+              aria-current={isActive(item.url) ? "page" : undefined}
+            >
+              {item.name}
+            </a>
           </li>
         ))
       }
       {
-        config.navigation_button && config.navigation_button.enable && (
-          <li class="inline-block lg:hidden mt-4 lg:mt-0">
-            <a class="btn btn-primary" aria-label={config.navigation_button.label} href={config.navigation_button.link}>
-              {config.navigation_button.label}
+        cta.enable && (
+          <li class="mt-4">
+            <a href={cta.link} target="_blank" rel="noopener noreferrer" class="btn btn-primary w-full">
+              {cta.label}
+              <Icon name="arrow" size={16} />
             </a>
           </li>
         )
       }
     </ul>
-
-    {
-      config.navigation_button && config.navigation_button.enable && (
-        <div class="order-1 ml-auto hidden lg:flex items-center md:order-2 lg:ml-0">
-          <RightArrowBtn
-            aria-label={config.navigation_button.label}
-            link={config.navigation_button.link}
-            label={config.navigation_button.label}
-            className="btn btn-outline-primary"
-          />
-        </div>
-      )
-    }
-  </nav>
+  </div>
 </header>
-<script>
-  const headerHamburgerInit = () => {
-    const allPages = document.getElementById("all-pages");
-    allPages &&
-      allPages.addEventListener("click", () => {
-        const menu = document.getElementById("all-pages-dropdown");
-        menu && menu.classList.toggle("active");
-      });
-  };
 
-  document.addEventListener("astro:page-load", () => {
-    headerHamburgerInit();
-  });
+<script>
+  let controller: AbortController | undefined;
+
+  function initHeader() {
+    const header = document.querySelector<HTMLElement>(".site-header");
+    const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+    const panel = document.getElementById("mobile-menu");
+    if (!header || !toggle || !panel) return;
+
+    controller?.abort();
+    controller = new AbortController();
+    const { signal } = controller;
+
+    const setScrolled = () => {
+      header.dataset.scrolled = String(window.scrollY > 12 || toggle.getAttribute("aria-expanded") === "true");
+    };
+    setScrolled();
+    window.addEventListener("scroll", setScrolled, { passive: true, signal });
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      panel.classList.toggle("hidden", !open);
+      toggle.querySelector(".menu-open")?.classList.toggle("hidden", open);
+      toggle.querySelector(".menu-close")?.classList.toggle("hidden", !open);
+      setScrolled();
+    };
+    toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+    document.addEventListener("keydown", (e) => e.key === "Escape" && setOpen(false), { signal });
+  }
+  document.addEventListener("astro:page-load", initHeader);
 </script>

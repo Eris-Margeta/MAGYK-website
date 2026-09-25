@@ -1,0 +1,58 @@
+---
+interface Segment {
+  label: string;
+  percent: number;
+  color: string;
+}
+
+interface Props {
+  segments: Segment[];
+  total: string;
+  class?: string;
+}
+
+const { segments, total, class: className = "" } = Astro.props;
+
+const radius = 80;
+const circumference = 2 * Math.PI * radius;
+const gap = 3;
+let offset = 0;
+const arcs = segments.map((s) => {
+  const length = Math.max((circumference * s.percent) / 100 - gap, 1);
+  const arc = { ...s, length, offset };
+  offset += (circumference * s.percent) / 100;
+  return arc;
+});
+---
+
+<div class={`relative aspect-square ${className}`}>
+  <div class="absolute inset-[18%] rounded-full bg-primary/10 blur-2xl"></div>
+  <svg viewBox="0 0 200 200" class="relative h-full w-full -rotate-90" role="img" aria-label="Token allocation chart">
+    <circle cx="100" cy="100" r={radius} fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="22"></circle>
+    {
+      arcs.map((a) => (
+        <circle
+          cx="100"
+          cy="100"
+          r={radius}
+          fill="none"
+          stroke={a.color}
+          stroke-width="22"
+          stroke-dasharray={`${a.length} ${circumference}`}
+          stroke-dashoffset={-a.offset}
+          class="donut-arc"
+        >
+          <title>{`${a.label}: ${a.percent}%`}</title>
+        </circle>
+      ))
+    }
+    <circle cx="100" cy="100" r="62" fill="none" stroke="rgba(233,196,106,0.25)" stroke-width="0.6" stroke-dasharray="1 3"
+    ></circle>
+  </svg>
+  <div class="absolute inset-0 grid place-items-center text-center">
+    <div>
+      <p class="text-xs uppercase tracking-[0.2em] text-light">Total supply</p>
+      <p class="text-gold mt-1 font-secondary text-xl font-bold sm:text-2xl">{total}</p>
+    </div>
+  </div>
+</div>

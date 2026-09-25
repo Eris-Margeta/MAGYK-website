@@ -1,0 +1,56 @@
+---
+import Img from "@/components/Img.astro";
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import Features from "@/partials/Features.astro";
+import PageHero from "@/partials/PageHero.astro";
+import Team from "@/partials/Team.astro";
+---
+
+<Base
+  title="About"
+  description="Meet MAGYK: a spellbinding journey into decentralized finance, NFTs and Web3, and the three co-founders behind it."
+>
+  <PageHero
+    eyebrow="About MAGYK"
+    title="Welcome to the world of MAGYK"
+    description="A realm where innovation meets the arcane, and blockchain technology and ancient wisdom intertwine."
+    image="/images/magyk/realm.jpg"
+  />
+
+  <section class="section overflow-x-clip pt-8">
+    <div class="container grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+      <div class="space-y-6 text-lg text-light" data-reveal>
+        <p class="font-secondary text-2xl leading-snug text-text md:text-3xl">
+          MAGYK is more than a cryptocurrency. It’s a spellbinding journey into the future of decentralized finance.
+        </p>
+        <p>
+          Powered by mystery, mastery and limitless potential, MAGYK is forged from the essence of trust and
+          transparency. It unlocks a universe where financial sovereignty is within reach for all.
+        </p>
+        <p>
+          Whether you’re a seeker of knowledge, a conjurer of possibilities or a guardian of the digital frontier, MAGYK
+          empowers you to weave your own destiny in the ever-expanding cryptoverse.
+        </p>
+        <p>Join us as we unveil the secrets of a decentralized tomorrow, one enchanted transaction at a time.</p>
+      </div>
+      <div class="relative" data-reveal>
+        <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-primary/15 blur-3xl"></div>
+        <div class="border-gradient overflow-hidden rounded-[1.75rem]">
+          <Img
+            src="/images/magyk/wordmark.jpg"
+            alt="The MAGYK wordmark in ornate gold lettering surrounded by purple arcane light"
+            width={720}
+            height={720}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="aspect-square w-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Team />
+  <Features />
+  <CallToAction />
+</Base>

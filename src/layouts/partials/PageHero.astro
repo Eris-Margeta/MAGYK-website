@@ -1,0 +1,43 @@
+---
+import Img from "@/components/Img.astro";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { eyebrow, title, description, image = "/images/magyk/forest.jpg" } = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden pb-16 pt-40 lg:pb-24 lg:pt-48">
+  <Img
+    src={image}
+    alt=""
+    width={1024}
+    height={1024}
+    widths={[640, 1024]}
+    sizes="100vw"
+    quality={55}
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-30"
+  />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-body/70 via-body/80 to-body"></div>
+  <div class="bg-grid absolute inset-0 -z-10 opacity-50"></div>
+  <div class="container text-center">
+    <span class="eyebrow" data-reveal>{eyebrow}</span>
+    <h1 class="mx-auto mt-6 max-w-4xl text-h2-sm md:text-h1 xl:text-hero" data-reveal data-reveal-delay="80">
+      {title}
+    </h1>
+    {
+      description && (
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-light md:text-xl" data-reveal data-reveal-delay="160">
+          {description}
+        </p>
+      )
+    }
+    <slot />
+  </div>
+</section>

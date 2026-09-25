@@ -4,40 +4,39 @@
     "base_url": "https://magyk.vercel.app",
     "base_path": "/",
     "trailing_slash": false,
-    "favicon": "/images/favicon.png",
-    "logo": "/images/logo.png",
-    "logo_width": "159",
-    "logo_height": "49",
+    "favicon": "/images/magyk/sigil.svg",
     "logo_text": "MAGYK"
   },
 
-  "settings": {
-    "pagination": 8,
-    "summary_length": 70,
-    "news_folder": "news",
-    "events_folder": "events"
+  "token": {
+    "symbol": "$MAGYK",
+    "chain": "Optimism",
+    "chain_id": 10,
+    "contract_address": "0x1b6e0837242DC30c40F154C6bB72c55Db8B109D9",
+    "explorer_url": "https://optimistic.etherscan.io/token/0x1b6e0837242DC30c40F154C6bB72c55Db8B109D9",
+    "sale_url": "https://tokentool.bitbond.com/tokensale/0xDc1661D45e3bB29EB3731CFd9C054f54666d9249?chainId=10",
+    "dextools_url": "https://www.dextools.io/app/en/optimism/pair-explorer/0xbb4b20c10b390f258030590121683a9ff9b28797"
+  },
+
+  "contact": {
+    "email": "info@magyk.xyz",
+    "phone": "+1 (519) 900-7495",
+    "phone_href": "+15199007495"
   },
 
   "params": {
-    "contact_form_action": "#",
-    "copyright": "©{year} All Rights Reserved by [MAGYK](https://magyk.xyz)."
-  },
-
-  "newsletter": {
-    "footer_title": "STAY UP TO DATE",
-    "input_placeholder": "Your Email",
-    "input_action": "#"
+    "copyright": "©{year} MAGYK. All rights reserved."
   },
 
   "navigation_button": {
     "enable": true,
-    "label": "Get Started",
-    "link": ""
+    "label": "Buy $MAGYK",
+    "link": "https://tokentool.bitbond.com/tokensale/0xDc1661D45e3bB29EB3731CFd9C054f54666d9249?chainId=10"
   },
 
   "metadata": {
-    "meta_author": "Eris",
-    "meta_image": "/images/og-image.png",
-    "meta_description": "MAGYK REALM"
+    "meta_author": "MAGYK",
+    "meta_image": "/images/magyk/og.jpg",
+    "meta_description": "MAGYK is a community-driven token and NFT ecosystem on Optimism: gasless EVM tokens, cross-chain liquidity, ERC-404 NFTs and Pfife, a cross-chain exchange protocol."
   }
 }

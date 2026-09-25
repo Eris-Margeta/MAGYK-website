@@ -1,0 +1,61 @@
+---
+import config from "@/config/config.json";
+import Icon from "./Icon.astro";
+
+const { class: className = "" } = Astro.props;
+const { contract_address, explorer_url, chain } = config.token;
+const short = `${contract_address.slice(0, 6)}…${contract_address.slice(-4)}`;
+---
+
+<div
+  class={`inline-flex max-w-full items-center gap-1 rounded-full border border-border bg-body/60 p-1 pl-4 text-sm backdrop-blur ${className}`}
+>
+  <span class="shrink-0 text-light">{chain} CA</span>
+  <a
+    href={explorer_url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="truncate px-2 font-mono text-text transition-colors hover:text-primary"
+    title={`View ${contract_address} on the block explorer`}
+  >
+    <span class="sm:hidden">{short}</span>
+    <span class="hidden sm:inline">{contract_address}</span>
+  </a>
+  <button
+    type="button"
+    class="copy-address relative grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/5 text-text transition-colors hover:bg-primary hover:text-dark"
+    data-address={contract_address}
+    aria-label="Copy contract address"
+  >
+    <span class="copy-idle"><Icon name="copy" size={15} /></span>
+    <span class="copy-done hidden text-primary"><Icon name="check" size={15} /></span>
+    <span
+      class="copy-toast pointer-events-none absolute -top-9 right-0 whitespace-nowrap rounded-md bg-primary px-2 py-1 text-xs font-semibold text-dark opacity-0 transition-opacity"
+      role="status">Copied!</span
+    >
+  </button>
+</div>
+
+<script>
+  function initCopy() {
+    document.querySelectorAll<HTMLButtonElement>(".copy-address").forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "true";
+      btn.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(btn.dataset.address ?? "");
+        const idle = btn.querySelector(".copy-idle");
+        const done = btn.querySelector(".copy-done");
+        const toast = btn.querySelector<HTMLElement>(".copy-toast");
+        idle?.classList.add("hidden");
+        done?.classList.remove("hidden");
+        toast?.classList.add("opacity-100");
+        setTimeout(() => {
+          idle?.classList.remove("hidden");
+          done?.classList.add("hidden");
+          toast?.classList.remove("opacity-100");
+        }, 1800);
+      });
+    });
+  }
+  document.addEventListener("astro:page-load", initCopy);
+</script>

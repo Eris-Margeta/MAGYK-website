@@ -1,0 +1,46 @@
+---
+import Img from "@/components/Img.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+import { getEntry } from "astro:content";
+
+interface Props {
+  showBio?: boolean;
+}
+
+const { showBio = true } = Astro.props;
+const { members } = (await getEntry("team", "team"))!.data;
+---
+
+<section id="team" class="section">
+  <div class="container">
+    <SectionTitle
+      eyebrow="The wizards"
+      title="Meet the founders"
+      description="Three co-founders with roots in NFT art, trading and community building, conjuring MAGYK together."
+    />
+    <div class="grid gap-6 md:grid-cols-3">
+      {
+        members.map((m, i) => (
+          <article class="card card-hover group overflow-hidden" data-reveal data-reveal-delay={String(i * 100)}>
+            <div class="relative overflow-hidden">
+              <Img
+                src={m.avatar}
+                alt={`Profile art for ${m.name}`}
+                width={480}
+                height={480}
+                sizes="(min-width: 768px) 33vw, 100vw"
+                class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-body via-body/10 to-transparent" />
+              <div class="absolute bottom-0 left-0 p-6">
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{m.role}</p>
+                <h3 class="mt-1 text-2xl">{m.name}</h3>
+              </div>
+            </div>
+            {showBio && <p class="p-6 pt-4 text-light">{m.bio}</p>}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

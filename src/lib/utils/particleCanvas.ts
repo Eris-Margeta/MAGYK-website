@@ -1,85 +1,88 @@
-export function sporeCanvas(
-  targetElementClassName: string,
-  particleCount: number = 400,
-  particleMinSize: number = 1,
-  particleMaxSize: number = 3.5,
-  particleMinSpeed: number = 0.1,
-  particleMaxSpeed: number = 1.5,
-  particleWobbleSpeed: number = 0.2,
-  particleWobble: number = 0.5,
-  canvasSize: number = 2000
-) {
-  // Reduce particle count on mobile devices
-  if (window.innerWidth < 768) {
-    particleCount = particleCount > 40 ? 20 : particleCount;
-    canvasSize = canvasSize > 1000 ? 1000 : canvasSize;
-  }
+const COLORS = ["255, 241, 184", "233, 196, 106", "196, 160, 255"];
 
-  const canvasElements = document.querySelectorAll(targetElementClassName) as NodeListOf<HTMLCanvasElement>;
+type Particle = {
+  x: number;
+  y: number;
+  r: number;
+  vy: number;
+  wobble: number;
+  phase: number;
+  alpha: number;
+  color: string;
+};
 
-  canvasElements.forEach((canvas) => {
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
-    const particles: Particle[] = [];
+export function emberCanvas(canvas: HTMLCanvasElement, density = 0.00012) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
 
-    class Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedY: number;
-      wobble: number;
-      wobbleSpeed: number;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return () => {};
 
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * (particleMaxSize - particleMinSize) + particleMinSize;
-        this.speedY = Math.random() * (particleMaxSpeed - particleMinSpeed) - particleMaxSpeed;
-        this.wobble = Math.random() * particleWobble;
-        this.wobbleSpeed = Math.random() * particleWobbleSpeed;
-      }
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let width = 0;
+  let height = 0;
+  let particles: Particle[] = [];
+  let frame = 0;
+  let running = false;
 
-      update() {
-        this.y += this.speedY;
-        this.x += Math.sin(this.y * this.wobbleSpeed) * this.wobble;
-
-        if (this.y < -20) {
-          this.y = canvas.height + Math.random() * 20;
-          this.x = Math.random() * canvas.width;
-        }
-      }
-
-      draw() {
-        ctx.fillStyle = "rgba(255, 255, 255)";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((particle) => {
-        particle.update();
-        particle.draw();
-      });
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
+  const spawn = (y?: number): Particle => ({
+    x: Math.random() * width,
+    y: y ?? Math.random() * height,
+    r: Math.random() * 1.8 + 0.4,
+    vy: Math.random() * 0.45 + 0.12,
+    wobble: Math.random() * 0.6,
+    phase: Math.random() * Math.PI * 2,
+    alpha: Math.random() * 0.6 + 0.25,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
   });
 
-  window.addEventListener("resize", () => {
-    canvasElements.forEach((canvas) => {
-      canvas.width = canvasSize;
-      canvas.height = canvasSize;
-    });
-  });
+  const resize = () => {
+    const rect = canvas.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.min(Math.round(width * height * density), 220);
+    particles = Array.from({ length: count }, () => spawn());
+  };
+
+  const draw = () => {
+    ctx.clearRect(0, 0, width, height);
+    for (const p of particles) {
+      p.y -= p.vy;
+      p.phase += 0.01;
+      p.x += Math.sin(p.phase) * p.wobble * 0.3;
+      if (p.y < -10) Object.assign(p, spawn(height + 10));
+      const flicker = p.alpha * (0.75 + Math.sin(p.phase * 3) * 0.25);
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(${p.color}, ${flicker})`;
+      ctx.shadowColor = `rgba(${p.color}, 0.9)`;
+      ctx.shadowBlur = p.r * 6;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    frame = requestAnimationFrame(draw);
+  };
+
+  const start = () => {
+    if (running) return;
+    running = true;
+    frame = requestAnimationFrame(draw);
+  };
+  const stop = () => {
+    running = false;
+    cancelAnimationFrame(frame);
+  };
+
+  resize();
+  const visibility = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
+  visibility.observe(canvas);
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(canvas);
+
+  return () => {
+    stop();
+    visibility.disconnect();
+    resizeObserver.disconnect();
+  };
 }

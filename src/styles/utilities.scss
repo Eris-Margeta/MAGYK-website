@@ -1,20 +1,72 @@
-.bg-gradient {
-  @apply bg-gradient-to-b from-[rgba(249,249,249,1)] from-[0.53%] to-white to-[83.28%];
+.text-gold {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(120deg, #fff1b8 0%, #e9c46a 40%, #c8932f 70%, #fff1b8 100%);
+  background-size: 200% auto;
 }
 
-.rounded-sm {
-  @apply rounded-[4px];
-}
-.rounded {
-  @apply rounded-[6px];
-}
-.rounded-lg {
-  @apply rounded-[12px];
-}
-.rounded-xl {
-  @apply rounded-[16px];
+.text-gold-animated {
+  animation: shimmer 6s linear infinite;
 }
 
-.shadow {
-  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.05);
+.glow-gold {
+  filter: drop-shadow(0 0 40px rgba(233, 196, 106, 0.35));
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+}
+
+.spin-slow {
+  animation: spin 60s linear infinite;
+}
+
+.spin-slow-reverse {
+  animation: spin 90s linear infinite reverse;
+}
+
+.float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.pulse-dot {
+  @apply relative;
+  &::after {
+    content: "";
+    @apply absolute inset-0 rounded-full bg-current;
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
 }
